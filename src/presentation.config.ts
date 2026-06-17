@@ -3,15 +3,12 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 export const config = {
-  // Bandeau affiché en bas de chaque slide.
-  brand: 'React Slide Engine',
+  brand: 'SeemsLegit · M1 Cybersécurité · Oteria 2025/2026',
 
-  // Votre équipe : un nom → une couleur. Référencez ces noms dans `meta.speaker`,
-  // ex. `speaker: ['Alice', 'Bob']`. La couleur est optionnelle : un nom absent
-  // d'ici reçoit automatiquement une couleur stable. (Exemples à remplacer.)
   speakers: {
-    Alice: '#1d4ed8',
-    Bob: '#b91c1c',
+    Harouna: '#0f766e',
+    Killian: '#1d4ed8',
+    Jeremy: '#7c3aed',
   } as Record<string, string>,
 }
 
