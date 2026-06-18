@@ -69,11 +69,9 @@ export function Component(_: SlideContext) {
             >
               <SectionLabel color={color}>{domain}</SectionLabel>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10 }}>
-                {items.map(({ who, text }, i) => (
+                {items.map(({ text }, i) => (
                   <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start' }}>
-                    <span style={{ fontFamily: tokens.type.family.mono, fontSize: '9px', color, fontWeight: 700, flexShrink: 0, marginTop: 3, minWidth: 40 }}>
-                      {who}
-                    </span>
+                    <span style={{ color, flexShrink: 0, marginTop: 2 }}>→</span>
                     <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed }}>
                       {text}
                     </span>

@@ -83,7 +83,7 @@ export function Component(_: SlideContext) {
         }}
       >
         Le moteur CodeGenerator livre du polymorphisme via des variantes aléatoires, renommage de symboles,
-        chiffrement de strings et injection de leurres — combiné à{' '}
+        chiffrement de strings et injection de leurres - combiné à{' '}
         <strong style={{ color: tokens.color.text.tertiary }}>4 agents dans 4 langages</strong>{' '}
         et{' '}
         <strong style={{ color: tokens.color.text.tertiary }}>3 canaux C2 couverts</strong>.

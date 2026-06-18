@@ -9,6 +9,8 @@ export const tokens = {
     surface: {
       base: '#ffffff',
       subtle: '#f5f5f5',
+      tech: '#f8fafc',
+      techAlt: '#eef2f7',
       line: '#d4d4d4',
       lineStrong: '#a3a3a3',
     },
@@ -32,10 +34,11 @@ export const tokens = {
       mono: '"JetBrains Mono", "IBM Plex Mono", monospace',
     },
     size: {
-      xs: '12px',
-      sm: '14px',
+      '2xs': '11px',
+      xs: '13px',
+      sm: '15px',
       base: '16px',
-      md: '18px',
+      md: '19px',
       lg: '22px',
       xl: '28px',
       '2xl': '36px',

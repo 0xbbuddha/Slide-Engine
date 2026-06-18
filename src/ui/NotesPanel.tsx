@@ -31,7 +31,7 @@ export function NotesPanel({ id, meta }: NotesPanelProps) {
         style={{
           marginBottom: meta.notes ? 6 : 0,
           fontFamily: tokens.type.family.mono,
-          fontSize: '11px',
+          fontSize: tokens.type.size.xs,
           letterSpacing: tokens.type.tracking.wide,
           color: tokens.color.text.muted,
           textTransform: 'uppercase',

@@ -77,7 +77,7 @@ export function Toolbar({
           </span>
 
           {totalSteps > 0 && (
-            <span style={{ color: tokens.color.text.tertiary, fontSize: '11px' }}>
+            <span style={{ color: tokens.color.text.tertiary, fontSize: tokens.type.size.xs }}>
               {step}/{totalSteps}
             </span>
           )}

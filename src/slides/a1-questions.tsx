@@ -22,7 +22,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32, width: '100%' }}>
 
       <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>Annexe — Q&amp;A</Eyebrow>
+        <Eyebrow>Annexe - Q&amp;A</Eyebrow>
       </motion.div>
 
       <motion.h1

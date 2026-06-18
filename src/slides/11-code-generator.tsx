@@ -115,7 +115,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>10 — Code Generator</Eyebrow>
+        <Eyebrow>10 - Code Generator</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -129,7 +129,7 @@ export function Component(_: SlideContext) {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, width: '100%' }}>
 
-        {/* Left — module selection + compile */}
+        {/* Left - module selection + compile */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 
           {/* Module pool */}
@@ -155,7 +155,7 @@ export function Component(_: SlideContext) {
                       borderRadius: 4,
                       padding: '3px 8px',
                       fontFamily: tokens.type.family.mono,
-                      fontSize: '11px',
+                      fontSize: tokens.type.size.xs,
                       color: isSelected ? color : tokens.color.text.muted,
                     }}
                   >
@@ -167,12 +167,12 @@ export function Component(_: SlideContext) {
           </div>
 
           {/* Compile progress */}
-          <div style={{ background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '12px 14px' }}>
+          <div style={{ background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '12px 14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
               <SectionLabel color={build.phase === 'done' ? tokens.color.semantic.success : tokens.color.accent.blue}>
                 {build.phase === 'done' ? 'Build terminé' : build.phase === 'compiling' ? 'Compilation...' : 'En attente'}
               </SectionLabel>
-              <span style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: tokens.color.text.muted }}>
+              <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.muted }}>
                 {Math.round(build.progress)}%
               </span>
             </div>
@@ -205,7 +205,7 @@ export function Component(_: SlideContext) {
                     transition={{ duration: 0.15 }}
                     style={{
                       fontFamily: tokens.type.family.mono,
-                      fontSize: '11px',
+                      fontSize: tokens.type.size.xs,
                       color: isOk ? tokens.color.semantic.success : isGen ? tokens.color.accent.teal : tokens.color.text.tertiary,
                       lineHeight: 1.5,
                     }}
@@ -215,14 +215,14 @@ export function Component(_: SlideContext) {
                 )
               })}
               {build.phase === 'compiling' && (
-                <span style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: tokens.color.accent.blue }}>█</span>
+                <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.accent.blue }}>█</span>
               )}
             </div>
           </div>
 
         </div>
 
-        {/* Right — binary output */}
+        {/* Right - binary output */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 
           <AnimatePresence>
@@ -234,12 +234,12 @@ export function Component(_: SlideContext) {
                 style={{ display: 'flex', flexDirection: 'column', gap: 12 }}
               >
                 {/* Hex dump */}
-                <div style={{ background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '12px 14px' }}>
-                  <SectionLabel color={tokens.color.semantic.success}>Binaire généré — aperçu hexdump</SectionLabel>
+                <div style={{ background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '12px 14px' }}>
+                  <SectionLabel color={tokens.color.semantic.success}>Binaire généré - aperçu hexdump</SectionLabel>
                   <div style={{ marginTop: 10 }}>
                     {Array.from({ length: 4 }).map((_, row) => (
                       <div key={row} style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 3 }}>
-                        <span style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', color: tokens.color.text.muted, minWidth: 52 }}>
+                        <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size['2xs'], color: tokens.color.text.muted, minWidth: 52 }}>
                           {(row * 16).toString(16).padStart(8, '0')}
                         </span>
                         <div style={{ display: 'flex', gap: 4, flex: 1 }}>
@@ -251,7 +251,7 @@ export function Component(_: SlideContext) {
                               : v > 64 ? tokens.color.accent.blue
                               : tokens.color.accent.teal
                             return (
-                              <span key={i} style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color, letterSpacing: '0.02em' }}>{b}</span>
+                              <span key={i} style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color, letterSpacing: '0.02em' }}>{b}</span>
                             )
                           })}
                         </div>
@@ -261,9 +261,9 @@ export function Component(_: SlideContext) {
                 </div>
 
                 {/* SHA256 hash */}
-                <div style={{ background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '12px 14px' }}>
-                  <SectionLabel color={tokens.color.accent.teal}>SHA-256 — unique par build</SectionLabel>
-                  <div style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: tokens.color.accent.teal, marginTop: 8, letterSpacing: '0.04em', wordBreak: 'break-all', lineHeight: 1.6 }}>
+                <div style={{ background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '12px 14px' }}>
+                  <SectionLabel color={tokens.color.accent.teal}>SHA-256 - unique par build</SectionLabel>
+                  <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.accent.teal, marginTop: 8, letterSpacing: '0.04em', wordBreak: 'break-all', lineHeight: 1.6 }}>
                     {build.hash}
                   </div>
                 </div>

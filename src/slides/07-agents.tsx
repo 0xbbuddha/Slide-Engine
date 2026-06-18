@@ -27,7 +27,7 @@ WriteProcessMemory(hProc, buf, sc, sz, 0);`,
     name: 'Morpheus',
     os: 'Windows',
     color: tokens.color.accent.teal,
-    desc: 'Obfusqué via garble — aucun import visible dans le binaire compilé.',
+    desc: 'Obfusqué via garble - aucun import visible dans le binaire compilé.',
     code: `hProc, _ := windows.OpenProcess(
   windows.PROCESS_ALL_ACCESS,
   false, uint32(pid))
@@ -49,7 +49,7 @@ ctypes.windll.kernel32\\
     name: 'Aphrodite',
     os: 'Cross-platform',
     color: tokens.color.accent.violet,
-    desc: '42 commandes, AES-256-CBC, HMAC-SHA256, hidstr XOR compile-time.',
+    desc: 'AES-256-CBC + HMAC-SHA256, hidstr XOR compile-time, SOCKS5 proxy integre.',
     code: `let key = hidstr("SL_PSK_AES256")
 let enc = aesCBC.encrypt(payload, key)
 discard checkin(b64encode(enc),
@@ -62,7 +62,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>06 — Agents Mythic</Eyebrow>
+        <Eyebrow>06 - Agents Mythic</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -91,32 +91,37 @@ export function Component(_: SlideContext) {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.58 }}
-        style={{
-          width: '100%',
-          background: tokens.color.surface.subtle,
-          border: `1px solid ${tokens.color.surface.line}`,
-          borderLeft: `2px solid ${tokens.color.semantic.warning}`,
-          borderRadius: 8,
-          padding: '14px 20px',
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: 18,
-        }}
+        style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}
       >
-        <div style={{ flexShrink: 0 }}>
-          <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.md, fontWeight: 700, color: tokens.color.semantic.warning, marginBottom: 6 }}>Hephaestus</div>
-          <Tag color={tokens.color.semantic.warning}>Loader Nim · Windows</Tag>
-        </div>
-        <div style={{ width: 1, alignSelf: 'stretch', background: tokens.color.surface.line, flexShrink: 0 }} />
-        <div style={{ display: 'flex', flex: 1, gap: 20 }}>
-          <p style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, margin: 0, flex: 1 }}>
-            Wrape Aphrodite via <strong style={{ color: tokens.color.text.primary, fontFamily: tokens.type.family.mono }}>donut</strong> (EXE&thinsp;→&thinsp;shellcode), applique la chaîne anti-EDR et injecte dans un process cible via Early Bird APC ou Thread Hijacking.
+        {/* Hephaestus */}
+        <div style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${tokens.color.semantic.warning}`, borderRadius: 8, padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.md, fontWeight: 700, color: tokens.color.semantic.warning }}>Hephaestus</div>
+            <Tag color={tokens.color.semantic.warning}>Loader Nim · Windows</Tag>
+          </div>
+          <p style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, margin: 0 }}>
+            Wrapper Aphrodite via <strong style={{ color: tokens.color.text.primary, fontFamily: tokens.type.family.mono }}>donut</strong> (EXE → shellcode). Applique ntdll unhook, ETW/AMSI patch, PPID spoof puis injecte via Early Bird APC ou Thread Hijacking.
           </p>
-          <pre style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: '#52525b', background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '8px 12px', margin: 0, lineHeight: 1.6, flexShrink: 0 }}>
+          <pre style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '7px 10px', margin: 0, lineHeight: 1.5 }}>
 {`ntdll unhook → ETW patch → AMSI patch
-PPID spoof   → VirtualAllocEx
-→  Early Bird APC  |  Thread Hijack
-→  wipe shellcode buffer`}
+PPID spoof → VirtualAllocEx
+→ Early Bird APC | Thread Hijack`}
+          </pre>
+        </div>
+
+        {/* Atreus */}
+        <div style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${tokens.color.accent.blue}`, borderRadius: 8, padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.md, fontWeight: 700, color: tokens.color.accent.blue }}>Atreus</div>
+            <Tag color={tokens.color.accent.blue}>Loader C · Windows</Tag>
+          </div>
+          <p style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, margin: 0 }}>
+            Loader C minimaliste. Chargement de shellcode avec contournement des defenses AV/EDR, concu pour etre leger et facilement adaptable.
+          </p>
+          <pre style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '7px 10px', margin: 0, lineHeight: 1.5 }}>
+{`// loader C minimaliste
+shellcode → decrypt → map → exec
+→ minimal footprint, no CRT dep`}
           </pre>
         </div>
       </motion.div>

@@ -10,7 +10,7 @@ export const meta: SlideMeta = {
   title: 'Résultats',
   speaker: ['Harouna', 'Killian', 'Jeremy'],
   steps: 4,
-  notes: 'Les métriques s\'animent au chargement. Révélez limitations avec →. Soyez honnêtes sur les limitations — le jury appréciera la lucidité.',
+  notes: 'Les métriques s\'animent au chargement. Révélez limitations avec →. Soyez honnêtes sur les limitations - le jury appréciera la lucidité.',
 }
 
 const SUCCESSES = [
@@ -18,12 +18,12 @@ const SUCCESSES = [
   '4 agents check-in dans Mythic et exécutent des commandes',
   'Bypass des hooks EDR courants (ntdll userland hooking)',
   '3 profils C2 couverts opérationnels (Chess.com · Notion · HTTP)',
-  'Boucle VirusTotal fonctionnelle — feedback itératif',
+  'Boucle VirusTotal fonctionnelle - feedback itératif',
   'Multi-workspace avec isolation complète des engagements',
 ]
 
 const LIMITATIONS = [
-  'API Mythic — toutes les intégrations souhaitées pas encore implémentées',
+  'API Mythic - toutes les intégrations souhaitées pas encore implémentées',
   'Certains modules d\'évasion ne sont pas mutuellement compatibles',
   'Techniques plus modernes (kernel callbacks, direct syscalls full) non encore implémentées',
   'Clé API VirusTotal stockée non chiffrée en base (TODO production)',
@@ -67,35 +67,35 @@ function AnimCounter({ from, to, duration = 1.6, delay = 0, color, suffix = '' }
 function ArcGauge({ value, max, color, label, unit }: {
   value: number; max: number; color: string; label: string; unit?: string
 }) {
-  const r = 36
+  const r = 28
   const circ = 2 * Math.PI * r
   const frac = value / max
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
-      <div style={{ position: 'relative', width: 90, height: 90 }}>
-        <svg width={90} height={90} viewBox="0 0 90 90">
-          <circle cx={45} cy={45} r={r} fill="none" stroke={`${color}15`} strokeWidth={7} />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+      <div style={{ position: 'relative', width: 72, height: 72 }}>
+        <svg width={72} height={72} viewBox="0 0 72 72">
+          <circle cx={36} cy={36} r={r} fill="none" stroke={`${color}15`} strokeWidth={6} />
           <motion.circle
-            cx={45} cy={45} r={r}
+            cx={36} cy={36} r={r}
             fill="none"
             stroke={color}
-            strokeWidth={7}
+            strokeWidth={6}
             strokeLinecap="round"
             strokeDasharray={circ}
             initial={{ strokeDashoffset: circ }}
             animate={{ strokeDashoffset: circ * (1 - frac) }}
             transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.4 }}
-            style={{ transformOrigin: '45px 45px', rotate: -90 }}
+            style={{ transformOrigin: '36px 36px', rotate: -90 }}
           />
         </svg>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ fontSize: 20, fontWeight: 700, color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
             <AnimCounter from={0} to={value} color={color} suffix={unit ?? ''} />
           </div>
         </div>
       </div>
-      <div style={{ fontSize: '10px', fontWeight: 600, color: tokens.color.text.tertiary, textAlign: 'center', fontFamily: tokens.type.family.mono, letterSpacing: '0.04em' }}>
+      <div style={{ fontSize: tokens.type.size['2xs'], fontWeight: 600, color: tokens.color.text.tertiary, textAlign: 'center', fontFamily: tokens.type.family.mono, letterSpacing: '0.04em' }}>
         {label}
       </div>
     </div>
@@ -124,7 +124,7 @@ function AgentGraph() {
   const agents = AGENT_NODES.slice(1)
 
   return (
-    <svg viewBox="0 0 230 165" style={{ width: '100%', height: 'auto' }} overflow="visible">
+    <svg viewBox="0 0 230 165" style={{ width: '100%', height: 130 }} overflow="visible">
       <defs>
         <filter id="agentglow" x="-100%" y="-100%" width="300%" height="300%">
           <feGaussianBlur stdDeviation="2" result="blur" />
@@ -164,7 +164,7 @@ function AgentGraph() {
         animate={{ r: [c2.r + 3, c2.r + 9], opacity: [0.5, 0] }}
         transition={{ repeat: Infinity, duration: 2, ease: 'easeOut' }}
       />
-      <text x={c2.x} y={c2.y + 4} textAnchor="middle" fontSize="8" fontFamily='"JetBrains Mono", monospace' fill={c2.color} fontWeight="700">
+      <text x={c2.x} y={c2.y + 4} textAnchor="middle" fontSize="10" fontFamily='"JetBrains Mono", monospace' fill={c2.color} fontWeight="700">
         {c2.label}
       </text>
 
@@ -177,7 +177,7 @@ function AgentGraph() {
             strokeWidth={1.5}
             filter={i === (pulse % 4) ? 'url(#agentglow)' : undefined}
           />
-          <text x={a.x + a.r + 4} y={a.y + 4} fontSize="9" fontFamily='"JetBrains Mono", monospace' fill={a.color}>
+          <text x={a.x + a.r + 4} y={a.y + 4} fontSize="11" fontFamily='"JetBrains Mono", monospace' fill={a.color}>
             {a.label}
           </text>
         </g>
@@ -190,10 +190,10 @@ function AgentGraph() {
 
 export function Component({ step }: SlideContext) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 18, width: '100%', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>13 — Résultats</Eyebrow>
+        <Eyebrow>13 - Résultats</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -218,15 +218,15 @@ export function Component({ step }: SlideContext) {
           { label: 'Agents actifs', from: 0, to: 4, max: 4, color: '#1d4ed8', unit: '' },
           { label: 'Modules évasion', from: 0, to: 16, max: 16, color: '#7c3aed', unit: '' },
         ].map(({ label, from, to, max, color, unit }) => (
-          <div key={label} style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '14px', display: 'flex', justifyContent: 'center' }}>
+          <div key={label} style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '8px', display: 'flex', justifyContent: 'center' }}>
             <ArcGauge value={to} max={max} color={color} label={label} unit={unit} />
           </div>
         ))}
       </motion.div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 16, width: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 12, width: '100%' }}>
 
-        {/* Left — successes */}
+        {/* Left - successes */}
         <div>
           <SectionLabel color={tokens.color.semantic.success}>Succès</SectionLabel>
           <motion.div
@@ -239,16 +239,16 @@ export function Component({ step }: SlideContext) {
               <motion.div
                 key={s}
                 variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0, transition: { duration: 0.35 } } }}
-                style={{ display: 'flex', alignItems: 'flex-start', gap: 8, background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 7, padding: '6px 12px' }}
+                style={{ display: 'flex', alignItems: 'flex-start', gap: 8, background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 6, padding: '4px 10px' }}
               >
-                <span style={{ color: tokens.color.semantic.success, flexShrink: 0, fontWeight: tokens.type.weight.bold }}>✓</span>
-                <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.normal }}>{s}</span>
+                <span style={{ color: tokens.color.semantic.success, flexShrink: 0, fontWeight: tokens.type.weight.bold, fontSize: tokens.type.size.xs }}>✓</span>
+                <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: 1.4 }}>{s}</span>
               </motion.div>
             ))}
           </motion.div>
         </div>
 
-        {/* Right — agent network + limitations */}
+        {/* Right - agent network + limitations */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
 
           {/* Agent network graph */}
@@ -259,7 +259,7 @@ export function Component({ step }: SlideContext) {
             style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '12px 16px' }}
           >
             <SectionLabel>Réseau C2 actif</SectionLabel>
-            <div style={{ marginTop: 8 }}>
+            <div style={{ marginTop: 6, maxHeight: 130, overflow: 'hidden' }}>
               <AgentGraph />
             </div>
           </motion.div>
@@ -280,7 +280,7 @@ export function Component({ step }: SlideContext) {
 
           <Reveal show={step >= 4}>
             <Highlight color={tokens.color.accent.blue}>
-              <strong style={{ color: tokens.color.accent.blue }}>Bilan :</strong> objectif principal atteint — agent unique et fonctionnel par build, avec bypass EDR démontré.
+              <strong style={{ color: tokens.color.accent.blue }}>Bilan :</strong> objectif principal atteint - agent unique et fonctionnel par build, avec bypass EDR démontré.
             </Highlight>
           </Reveal>
 

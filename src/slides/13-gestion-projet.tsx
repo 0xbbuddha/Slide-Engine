@@ -17,9 +17,9 @@ const TRACKS = [
 ]
 
 const TEAM = [
-  { name: 'Harouna Coulibaly', color: tokens.color.accent.teal, role: 'Plateforme SeemsLegit — architecture, backend FastAPI, Docker' },
-  { name: 'Killian Prin-Abeil', color: tokens.color.accent.blue, role: 'Agents Mythic — Aphrodite (Nim), Hephaestus, Chess.com C2' },
-  { name: 'Jeremy Diaz', color: tokens.color.accent.violet, role: 'Agents Mythic — Kratos (C), Morpheus (Go), Hermes (Python), intégration' },
+  { name: 'Harouna Coulibaly', color: tokens.color.accent.teal },
+  { name: 'Killian Prin-Abeil', color: tokens.color.accent.blue },
+  { name: 'Jeremy Diaz', color: tokens.color.accent.violet },
 ]
 
 const KANBAN = [
@@ -34,7 +34,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>12 — Gestion de Projet</Eyebrow>
+        <Eyebrow>12 - Gestion de Projet</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -77,10 +77,9 @@ export function Component(_: SlideContext) {
           >
             <SectionLabel>Équipe</SectionLabel>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: 12 }}>
-              {TEAM.map(({ name, color, role }) => (
+              {TEAM.map(({ name, color }) => (
                 <div key={name} style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${color}`, borderRadius: 7, padding: '9px 14px' }}>
-                  <div style={{ fontSize: tokens.type.size.sm, fontWeight: tokens.type.weight.semibold, color: tokens.color.text.primary, marginBottom: 2 }}>{name}</div>
-                  <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, lineHeight: tokens.type.leading.normal }}>{role}</div>
+                  <div style={{ fontSize: tokens.type.size.sm, fontWeight: tokens.type.weight.semibold, color: tokens.color.text.primary }}>{name}</div>
                 </div>
               ))}
             </div>

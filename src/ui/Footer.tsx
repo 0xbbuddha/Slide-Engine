@@ -9,7 +9,7 @@ export function Footer({ counter }: FooterProps) {
   const base = {
     position: 'fixed' as const,
     bottom: 14,
-    fontSize: '11px',
+    fontSize: tokens.type.size.xs,
     fontFamily: tokens.type.family.mono,
     letterSpacing: tokens.type.tracking.wide,
     color: tokens.color.text.muted,

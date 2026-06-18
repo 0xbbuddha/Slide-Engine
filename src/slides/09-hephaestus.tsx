@@ -48,7 +48,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>08 — Hephaestus · Loader Windows · Nim</Eyebrow>
+        <Eyebrow>08 - Hephaestus · Loader Windows · Nim</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -77,7 +77,7 @@ export function Component(_: SlideContext) {
             <SectionLabel>Techniques Anti-EDR</SectionLabel>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 12 }}>
               {TECHNIQUES.map(({ name, detail, color }) => (
-                <div key={name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '6px 10px' }}>
+                <div key={name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '6px 10px' }}>
                   <span style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, fontFamily: tokens.type.family.mono }}>{name}</span>
                   <Tag color={color}>{detail}</Tag>
                 </div>
@@ -104,7 +104,7 @@ export function Component(_: SlideContext) {
             transition={{ duration: 0.45, delay: 0.54 }}
           >
             <Highlight color={tokens.color.accent.teal}>
-              Clé RC4/XOR générée à chaque build — chaque binaire est <strong style={{ color: tokens.color.accent.teal }}>unique et distinct</strong>, aucune signature statique réutilisable entre deux compilations.
+              Clé RC4/XOR générée à chaque build - chaque binaire est <strong style={{ color: tokens.color.accent.teal }}>unique et distinct</strong>, aucune signature statique réutilisable entre deux compilations.
             </Highlight>
           </motion.div>
 

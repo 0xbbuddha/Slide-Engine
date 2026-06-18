@@ -13,7 +13,7 @@ export const meta: SlideMeta = {
 
 const POINTS = [
   { text: 'Les frameworks C2 open-source (Mythic, Havoc...) ont leurs signatures référencées dans toutes les bases EDR et AV.', accent: tokens.color.semantic.critical },
-  { text: 'Les EDR patchent ntdll.dll au chargement de chaque process pour hooker les Windows API — contourner ça demande des syscalls directs ou un unhooking ntdll.', accent: tokens.color.semantic.warning },
+  { text: 'Les EDR patchent ntdll.dll au chargement de chaque process pour hooker les Windows API - contourner ça demande des syscalls directs ou un unhooking ntdll.', accent: tokens.color.semantic.warning },
   { text: 'Un agent Mythic par défaut est détecté et bloqué en quelques secondes. Sans implant custom, il n\'y a pas d\'opération.', accent: tokens.color.semantic.critical },
 ]
 
@@ -38,7 +38,7 @@ const HOOK_PHASES = [
   },
   {
     label: 'Après ntdll unhooking',
-    sub: 'restaurée depuis disque — flux propre et direct',
+    sub: 'restaurée depuis disque - flux propre et direct',
     color: '#0f766e',
     ntdllLabel: 'ntdll.dll  [RESTORED]',
     hasEDR: false,
@@ -127,11 +127,11 @@ function HookFlowDiagram() {
               transition={{ repeat: Infinity, duration: 1 }}
               style={{ width: 6, height: 6, borderRadius: '50%', background: ph.color, flexShrink: 0 }}
             />
-            <span style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', color: ph.color, fontWeight: 700, letterSpacing: '0.04em' }}>
+            <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: ph.color, fontWeight: 700, letterSpacing: '0.04em' }}>
               {ph.label}
             </span>
           </div>
-          <div style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', color: tokens.color.text.muted, marginTop: 5, paddingLeft: 4 }}>
+          <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.muted, marginTop: 5, paddingLeft: 4 }}>
             {ph.sub}
           </div>
         </motion.div>
@@ -180,7 +180,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 28, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>02 — Contexte</Eyebrow>
+        <Eyebrow>02 - Contexte</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -194,7 +194,7 @@ export function Component(_: SlideContext) {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, width: '100%' }}>
 
-        {/* Left — points */}
+        {/* Left - points */}
         <StaggerList gap={12} delay={0.1}>
           {POINTS.map(({ text, accent }, i) => (
             <StaggerItem key={i} variant="left">
@@ -213,13 +213,13 @@ export function Component(_: SlideContext) {
               <div style={{ fontSize: tokens.type.size['3xl'], fontWeight: tokens.type.weight.semibold, color: tokens.color.text.primary, lineHeight: 1, flexShrink: 0 }}>~10j</div>
               <div>
                 <div style={{ fontSize: tokens.type.size.xs, fontWeight: 600, color: tokens.color.accent.blue }}>Mandiant M-Trends 2024</div>
-                <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, marginTop: 2 }}>Dwell time médian — atteignable uniquement avec implants custom</div>
+                <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, marginTop: 2 }}>Dwell time médian - atteignable uniquement avec implants custom</div>
               </div>
             </div>
           </StaggerItem>
         </StaggerList>
 
-        {/* Right — EDR hook flow */}
+        {/* Right - EDR hook flow */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}

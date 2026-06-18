@@ -50,7 +50,7 @@ export function Component({ step }: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>03 — Problématique</Eyebrow>
+        <Eyebrow>03 - Problématique</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -94,7 +94,7 @@ export function Component({ step }: SlideContext) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                 {lines.map((l) => (
                   <div key={l} style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
-                    <span style={{ color, flexShrink: 0, marginTop: 1, fontSize: 10 }}>—</span>
+                    <span style={{ color, flexShrink: 0, marginTop: 1, fontSize: 11 }}>-</span>
                     <span style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.tertiary, lineHeight: tokens.type.leading.normal }}>
                       {l}
                     </span>
@@ -106,12 +106,16 @@ export function Component({ step }: SlideContext) {
         ))}
       </div>
 
-      <Reveal show={step >= 3}>
-        <Highlight color={tokens.color.accent.blue}>
-          <strong style={{ color: tokens.color.accent.blue }}>SeemsLegit :</strong>{' '}
-          automatiser la production d'implants uniques et fonctionnels, sans intervention manuelle par build.
-        </Highlight>
-      </Reveal>
+      <div style={{ width: '100%' }}>
+        <Reveal show={step >= 3}>
+          <div style={{ background: `${tokens.color.accent.blue}0a`, border: `1px solid ${tokens.color.accent.blue}22`, borderRadius: 8, padding: '18px 24px', textAlign: 'center' }}>
+            <span style={{ fontSize: tokens.type.size.md, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed }}>
+              <strong style={{ color: tokens.color.accent.blue }}>SeemsLegit :</strong>{' '}
+              automatiser la production d'implants uniques et fonctionnels, sans intervention manuelle par build.
+            </span>
+          </div>
+        </Reveal>
+      </div>
 
     </div>
   )

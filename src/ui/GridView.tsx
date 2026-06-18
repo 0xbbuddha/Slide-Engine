@@ -73,7 +73,7 @@ export function GridView({ slides, labels, currentIndex, onSelect }: GridViewPro
                   justifyContent: 'space-between',
                   alignItems: 'center',
                   fontFamily: tokens.type.family.mono,
-                  fontSize: '11px',
+                  fontSize: tokens.type.size.xs,
                   letterSpacing: tokens.type.tracking.wide,
                   color: tokens.color.text.muted,
                 }}

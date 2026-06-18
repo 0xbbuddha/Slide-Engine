@@ -33,7 +33,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 32, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>14 — Roadmap</Eyebrow>
+        <Eyebrow>16 - Roadmap</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -85,7 +85,7 @@ export function Component(_: SlideContext) {
       >
         <Highlight color={tokens.color.accent.teal}>
           <strong style={{ color: tokens.color.accent.teal }}>Vision à terme :</strong>{' '}
-          un toolkit intégré pour les red teams — de la génération polymorphique à la gestion de campagne, avec feedback opérationnel continu. Support multi-framework (Sliver, Havoc, Mythic).
+          un toolkit intégré pour les red teams - de la génération polymorphique à la gestion de campagne, avec feedback opérationnel continu. Support multi-framework (Sliver, Havoc, Mythic).
         </Highlight>
       </motion.div>
 

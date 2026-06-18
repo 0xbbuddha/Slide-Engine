@@ -115,10 +115,10 @@ function NodeBox({ n, active }: { n: SNode; active: boolean }) {
           boxShadow: active ? `0 0 12px ${n.color}25` : undefined,
         }}
       >
-        <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '11px', fontWeight: 700, color: n.color, lineHeight: 1.2 }}>
+        <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: tokens.type.size.xs, fontWeight: 700, color: n.color, lineHeight: 1.2 }}>
           {n.label}
         </span>
-        <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: '9px', color: '#a3a3a3', lineHeight: 1 }}>
+        <span style={{ fontFamily: '"JetBrains Mono", monospace', fontSize: tokens.type.size['2xs'], color: '#a3a3a3', lineHeight: 1 }}>
           {n.sub}
         </span>
       </div>
@@ -179,8 +179,8 @@ function TopologyMap() {
       {NODES.map(n => <NodeBox key={n.id} n={n} active={tick % 2 === 0} />)}
 
       {/* Docker label */}
-      <text x="0" y={VH} fontSize="9" fill="#a3a3a3" fontFamily='"JetBrains Mono", monospace'>
-        Docker Compose — 4 services
+      <text x="0" y={VH} fontSize="13" fill="#a3a3a3" fontFamily='"JetBrains Mono", monospace'>
+        Docker Compose - 4 services
       </text>
     </svg>
   )
@@ -193,7 +193,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>05 — Plateforme</Eyebrow>
+        <Eyebrow>05 - Plateforme</Eyebrow>
       </motion.div>
 
       <motion.h2

@@ -83,7 +83,7 @@ function ScoreCircle({ detected, total, label, animate: doAnim }: {
           <div style={{ fontSize: 26, fontWeight: 700, color: isLow ? '#15803d' : '#b91c1c', lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
             {detected}
           </div>
-          <div style={{ fontSize: '10px', color: tokens.color.text.muted, fontFamily: tokens.type.family.mono }}>/ {total}</div>
+          <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, fontFamily: tokens.type.family.mono }}>/ {total}</div>
         </div>
       </div>
       <div style={{ fontSize: tokens.type.size.xs, fontWeight: 600, color: tokens.color.text.tertiary, textAlign: 'center', maxWidth: 110 }}>
@@ -145,7 +145,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>11 — VirusTotal Integration</Eyebrow>
+        <Eyebrow>11 - VirusTotal Integration</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -166,7 +166,7 @@ export function Component(_: SlideContext) {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.6fr', gap: 20, width: '100%' }}>
 
-        {/* Left — scores */}
+        {/* Left - scores */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
 
           {/* Score comparison */}
@@ -191,7 +191,7 @@ export function Component(_: SlideContext) {
                     <motion.div
                       animate={{ opacity: [1, 0.4, 1] }}
                       transition={{ repeat: Infinity, duration: 1 }}
-                      style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: tokens.color.accent.blue }}
+                      style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.accent.blue }}
                     >
                       scanning...
                     </motion.div>
@@ -202,9 +202,9 @@ export function Component(_: SlideContext) {
           </div>
 
           {/* SHA + features */}
-          <div style={{ background: '#0a0a0f', border: `1px solid #2a2a35`, borderRadius: 10, padding: '14px 16px' }}>
-            <div style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', color: '#3f3f46', marginBottom: 6 }}>SHA-256</div>
-            <div style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', color: '#4ade80', wordBreak: 'break-all', letterSpacing: '0.04em' }}>
+          <div style={{ background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '14px 16px' }}>
+            <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, marginBottom: 6 }}>SHA-256</div>
+            <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: '#4ade80', wordBreak: 'break-all', letterSpacing: '0.04em' }}>
               8f3a1b2c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f
             </div>
           </div>
@@ -224,8 +224,8 @@ export function Component(_: SlideContext) {
 
         </div>
 
-        {/* Right — engine list */}
-        <div style={{ background: '#0a0a0f', border: `1px solid #2a2a35`, borderRadius: 10, padding: '14px 16px', overflow: 'hidden', position: 'relative' }}>
+        {/* Right - engine list */}
+        <div style={{ background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '14px 16px', overflow: 'hidden', position: 'relative' }}>
 
           {/* Scan line */}
           {phase === 'scanning' && (
@@ -242,9 +242,9 @@ export function Component(_: SlideContext) {
             />
           )}
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, paddingBottom: 8, borderBottom: '1px solid #1e1e2a' }}>
-            <span style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: '#3f3f46' }}>Moteur AV/EDR</span>
-            <span style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: '#3f3f46' }}>Résultat</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10, paddingBottom: 8, borderBottom: `1px solid ${tokens.color.surface.line}` }}>
+            <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary }}>Moteur AV/EDR</span>
+            <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary }}>Résultat</span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -262,7 +262,7 @@ export function Component(_: SlideContext) {
                   transition={{ duration: 0.2, delay: i * 0.015 }}
                   style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '3px 4px', borderRadius: 3 }}
                 >
-                  <span style={{ fontFamily: tokens.type.family.mono, fontSize: '11.5px', color: currentlyDetects ? '#f87171' : nowClean ? '#4ade80' : '#52525b' }}>
+                  <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: currentlyDetects ? '#f87171' : nowClean ? '#4ade80' : tokens.color.text.tertiary }}>
                     {engine.name}
                   </span>
                   <AnimatePresence mode="wait">
@@ -273,7 +273,7 @@ export function Component(_: SlideContext) {
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', fontWeight: 700, letterSpacing: '0.06em' }}
+                        style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size['2xs'], fontWeight: 700, letterSpacing: '0.06em' }}
                       >
                         {!wasDetected ? (
                           <span style={{ color: '#4ade80' }}>CLEAN</span>

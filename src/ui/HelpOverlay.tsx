@@ -92,7 +92,7 @@ export function HelpOverlay({ onClose }: HelpOverlayProps) {
                     key={k}
                     style={{
                       fontFamily: tokens.type.family.mono,
-                      fontSize: '11px',
+                      fontSize: tokens.type.size.xs,
                       color: tokens.color.text.primary,
                       background: tokens.color.surface.subtle,
                       border: `1px solid ${tokens.color.surface.line}`,
@@ -112,7 +112,7 @@ export function HelpOverlay({ onClose }: HelpOverlayProps) {
         <div
           style={{
             marginTop: 24,
-            fontSize: '11px',
+            fontSize: tokens.type.size.xs,
             fontFamily: tokens.type.family.mono,
             color: tokens.color.text.muted,
             letterSpacing: tokens.type.tracking.wide,

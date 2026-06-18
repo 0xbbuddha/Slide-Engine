@@ -21,7 +21,7 @@ export function Component(_: SlideContext) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 32, width: '100%', position: 'relative' }}>
 
-      {/* Hex ghost background — "SeemsLegit" en ascii hex, watermark très discret */}
+      {/* Hex ghost background - "SeemsLegit" en ascii hex, watermark très discret */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.055 }}
@@ -58,7 +58,7 @@ export function Component(_: SlideContext) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2, delay: 0.35 }}
             style={{
-              fontSize: tokens.type.size['5xl'],
+              fontSize: '112px',
               fontWeight: tokens.type.weight.bold,
               letterSpacing: tokens.type.tracking.tighter,
               lineHeight: tokens.type.leading.tight,
@@ -83,7 +83,7 @@ export function Component(_: SlideContext) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.4 }}
-            style={{ fontSize: tokens.type.size.xl, fontWeight: tokens.type.weight.light, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.secondary, margin: 0 }}
+            style={{ fontSize: '32px', fontWeight: tokens.type.weight.light, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.secondary, margin: 0 }}
           >
             Générateur d'agents Mythic C2 on-demand
           </motion.p>
@@ -108,7 +108,7 @@ export function Component(_: SlideContext) {
                 borderLeft: `2px solid ${color}`,
                 borderRadius: 5,
                 padding: '7px 16px',
-                fontSize: tokens.type.size.sm,
+                fontSize: tokens.type.size.base,
                 color: tokens.color.text.secondary,
                 fontFamily: tokens.type.family.mono,
               }}

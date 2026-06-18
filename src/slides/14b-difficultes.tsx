@@ -78,7 +78,7 @@ export function Component(_: SlideContext) {
             <SectionLabel color={color}>{label}</SectionLabel>
 
             <div style={{ display: 'flex', gap: 10 }}>
-              <span style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', color: tokens.color.semantic.critical, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>
+              <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.semantic.critical, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>
                 PROBLEME
               </span>
               <p style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, margin: 0 }}>
@@ -89,7 +89,7 @@ export function Component(_: SlideContext) {
             <div style={{ height: 1, background: tokens.color.surface.line }} />
 
             <div style={{ display: 'flex', gap: 10 }}>
-              <span style={{ fontFamily: tokens.type.family.mono, fontSize: '10px', color: tokens.color.semantic.success, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>
+              <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.semantic.success, fontWeight: 700, flexShrink: 0, marginTop: 2 }}>
                 SOLUTION
               </span>
               <p style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, margin: 0 }}>

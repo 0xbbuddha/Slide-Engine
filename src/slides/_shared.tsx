@@ -1,4 +1,4 @@
-// Composants partagés — ignoré par l'auto-découverte (préfixe _)
+// Composants partagés - ignoré par l'auto-découverte (préfixe _)
 import { ReactNode, CSSProperties, useEffect, useState, useRef } from 'react'
 import { motion, Variants } from 'framer-motion'
 import { tokens } from '../design/tokens'
@@ -20,7 +20,7 @@ export const scaleIn: Variants = {
   show: { opacity: 1, scale: 1, transition: { duration: 0.35, ease: [0.34, 1.2, 0.64, 1] } },
 }
 
-// ── ScrambleText — texte qui se décode depuis des caractères aléatoires ───
+// ── ScrambleText - texte qui se décode depuis des caractères aléatoires ───
 
 const SCRAMBLE_CHARS = 'ABCDEF0123456789@#$%!?><:;'
 
@@ -59,7 +59,7 @@ export function ScrambleText({ text, delay = 300 }: { text: string; delay?: numb
   return <>{display.join('')}</>
 }
 
-// ── Terminal — fake terminal output avec lignes animées ───────────────────
+// ── Terminal - fake terminal output avec lignes animées ───────────────────
 
 export type TermLine =
   | { t: 'cmd'; text: string }
@@ -74,7 +74,7 @@ const LINE_COLORS = {
   info: '#fbbf24',
   ok: '#4ade80',
   err: '#f87171',
-  data: '#a1a1aa',
+  data: tokens.color.text.tertiary,
 } as const
 
 const LINE_PREFIX = {
@@ -105,8 +105,8 @@ export function Terminal({ title = 'hephaestus.exe', lines, stepDelay = 110 }: {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
       style={{
-        background: '#05050a',
-        border: `1px solid ${tokens.color.surface.lineStrong}`,
+        background: tokens.color.surface.tech,
+        border: `1px solid ${tokens.color.surface.line}`,
         borderRadius: 8,
         overflow: 'hidden',
         width: '100%',
@@ -123,7 +123,7 @@ export function Terminal({ title = 'hephaestus.exe', lines, stepDelay = 110 }: {
         {(['#f87171', '#fbbf24', '#4ade80'] as const).map((c) => (
           <div key={c} style={{ width: 9, height: 9, borderRadius: '50%', background: c, opacity: 0.7 }} />
         ))}
-        <span style={{ marginLeft: 8, fontFamily: tokens.type.family.mono, fontSize: '11px', color: tokens.color.text.tertiary, letterSpacing: '0.04em' }}>
+        <span style={{ marginLeft: 8, fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, letterSpacing: '0.04em' }}>
           {title}
         </span>
       </div>
@@ -137,19 +137,19 @@ export function Terminal({ title = 'hephaestus.exe', lines, stepDelay = 110 }: {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.15 }}
-              style={{ fontFamily: tokens.type.family.mono, fontSize: '12.5px', lineHeight: 1.6, display: 'flex' }}
+              style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.sm, lineHeight: 1.55, display: 'flex' }}
             >
               <span style={{ color: LINE_COLORS[line.t], opacity: 0.75, flexShrink: 0 }}>
                 {LINE_PREFIX[line.t]}
               </span>
-              <span style={{ color: line.t === 'data' ? '#52525b' : LINE_COLORS[line.t] }}>
+              <span style={{ color: LINE_COLORS[line.t] }}>
                 {line.text}
               </span>
             </motion.div>
           )
         })}
         {shown < lines.length && (
-          <span style={{ fontFamily: tokens.type.family.mono, fontSize: '12.5px', color: '#4ade80', lineHeight: 1.6 }}>{'█'}</span>
+          <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.sm, color: '#4ade80', lineHeight: 1.55 }}>{'█'}</span>
         )}
       </div>
     </motion.div>
@@ -164,15 +164,15 @@ export function CodeBlock({ lang, code, color }: { lang: string; code: string; c
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      style={{ background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${color}`, borderRadius: 8, overflow: 'hidden' }}
+      style={{ background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${color}`, borderRadius: 8, overflow: 'hidden' }}
     >
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '5px 12px', background: tokens.color.surface.subtle, borderBottom: `1px solid ${tokens.color.surface.line}` }}>
-        <span style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{lang}</span>
+        <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{lang}</span>
         <div style={{ display: 'flex', gap: 4 }}>
           {[1, 2, 3].map(n => <div key={n} style={{ width: 5, height: 5, borderRadius: '50%', background: `${color}35` }} />)}
         </div>
       </div>
-      <pre style={{ fontFamily: tokens.type.family.mono, fontSize: '11.5px', color: '#71717a', lineHeight: 1.65, padding: '10px 14px', margin: 0, whiteSpace: 'pre', overflowX: 'auto' }}>
+      <pre style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, lineHeight: 1.65, padding: '10px 14px', margin: 0, whiteSpace: 'pre', overflowX: 'auto' }}>
         {code}
       </pre>
     </motion.div>
@@ -255,7 +255,7 @@ export function FlowStep({ n, text, color = tokens.color.accent.blue, last = fal
   return (
     <div style={{ display: 'flex', gap: 12, alignItems: 'stretch' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
-        <div style={{ width: 24, height: 24, borderRadius: '50%', background: `${color}18`, border: `1px solid ${color}40`, color, fontSize: 11, fontWeight: 700, fontFamily: tokens.type.family.mono, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{n}</div>
+        <div style={{ width: 24, height: 24, borderRadius: '50%', background: `${color}18`, border: `1px solid ${color}40`, color, fontSize: tokens.type.size.xs, fontWeight: 700, fontFamily: tokens.type.family.mono, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{n}</div>
         {!last && <div style={{ width: 1, flex: 1, background: `${color}20`, marginTop: 3, minHeight: 10 }} />}
       </div>
       <div style={{ fontSize: tokens.type.size.sm, fontFamily: mono ? tokens.type.family.mono : undefined, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.normal, paddingBottom: last ? 0 : 12, paddingTop: 2 }}>
@@ -293,7 +293,7 @@ export function AgentCard({ lang, name, os, color, desc, code }: { lang: string;
       </div>
       <p style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, lineHeight: tokens.type.leading.relaxed, margin: 0 }}>{desc}</p>
       {code && (
-        <pre style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', color: '#52525b', background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${color}40`, borderRadius: 5, padding: '8px 10px', margin: 0, lineHeight: 1.6, whiteSpace: 'pre', overflowX: 'auto' }}>
+        <pre style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${color}40`, borderRadius: 5, padding: '8px 10px', margin: 0, lineHeight: 1.6, whiteSpace: 'pre', overflowX: 'auto' }}>
           {code}
         </pre>
       )}
@@ -305,7 +305,7 @@ export function AgentCard({ lang, name, os, color, desc, code }: { lang: string;
 
 export function InfoRow({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#05050a', border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '6px 10px' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '6px 10px' }}>
       <span style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, fontFamily: tokens.type.family.mono }}>{label}</span>
       <Tag color={color}>{value}</Tag>
     </div>
