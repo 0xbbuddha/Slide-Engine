@@ -145,7 +145,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>11 - VirusTotal Integration</Eyebrow>
+        <Eyebrow>13 - VirusTotal</Eyebrow>
       </motion.div>
 
       <motion.h2

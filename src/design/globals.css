@@ -59,8 +59,8 @@ button {
 
 .slide-canvas {
   width: 100%;
-  max-width: 1440px;
-  padding: 0 48px;
+  max-width: 1520px;
+  padding: 0 40px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -70,6 +70,6 @@ button {
 
 @media (max-width: 800px) {
   .slide-canvas {
-    padding: 0 32px;
+    padding: 0 28px;
   }
 }

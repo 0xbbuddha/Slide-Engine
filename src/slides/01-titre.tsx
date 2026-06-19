@@ -83,7 +83,7 @@ export function Component(_: SlideContext) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.4 }}
-            style={{ fontSize: '32px', fontWeight: tokens.type.weight.light, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.secondary, margin: 0 }}
+            style={{ fontSize: '35px', fontWeight: tokens.type.weight.light, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.secondary, margin: 0 }}
           >
             Générateur d'agents Mythic C2 on-demand
           </motion.p>
@@ -125,7 +125,7 @@ export function Component(_: SlideContext) {
           transition={{ duration: 0.6, delay: 2.1 }}
           style={{ display: 'flex', gap: 24, alignItems: 'center' }}
         >
-          {['Mythic C2', 'Nim · C · Go · Py', 'VirusTotal Loop', 'Docker Compose'].map((l, i, arr) => (
+          {['Mythic C2', 'Nim · C · Go · Py', 'Agents sur mesure', 'Docker Compose'].map((l, i, arr) => (
             <span key={l} style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
               <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.muted, letterSpacing: tokens.type.tracking.wide }}>
                 {l}

@@ -7,19 +7,24 @@ import { SectionLabel } from './_shared'
 
 export const meta: SlideMeta = {
   title: 'Architecture',
-  speaker: ['Harouna'],
-  notes: 'Stack technique : 4 services Docker Compose. Le CLI seemslegit-cli rend l\'installation et la gestion accessible en une seule commande.',
+  speaker: ['Killian'],
+  notes: 'Stack technique : 4 services Docker Compose. Le CLI centralise l\'installation, la configuration et l\'exploitation de la plateforme.',
 }
 
 const FEATURES = [
   { v: 'Multi-workspace', d: 'isolation par engagement' },
   { v: 'RBAC', d: 'Admin / Operator / Viewer' },
   { v: 'Audit log', d: 'toutes les actions tracées' },
-  { v: 'Campagnes', d: 'agents liés aux engagements' },
+  { v: 'Profils C2', d: 'HTTP · Chess.com · Notion' },
   { v: 'Mythic', d: 'intégration API native' },
 ]
 
-const CLI = ['install', 'up / down / restart', 'config init / show', 'config resetpwd', 'logs backend', 'update']
+const CLI_ACTIONS = [
+  { cmd: 'seemslegit install', detail: 'bootstrap backend, frontend et dépendances' },
+  { cmd: 'seemslegit up', detail: 'démarrage de la plateforme complète' },
+  { cmd: 'seemslegit config init', detail: 'initialisation workspace, Mythic et profils C2' },
+  { cmd: 'seemslegit logs backend', detail: 'diagnostic rapide, maintenance et update' },
+]
 
 // ── Network topology with packet animation ─────────────────────────────────
 
@@ -29,7 +34,7 @@ const violet = '#7c3aed'
 const gray   = '#71717a'
 
 // SVG viewport
-const VW = 860
+const VW = 950
 const VH = 170
 
 // Node definitions (x, y = top-left corner)
@@ -41,7 +46,8 @@ const NODES: SNode[] = [
   { id: 'fastapi',  label: 'FastAPI',    sub: 'REST + JWT',    color: teal,   x: 446, y: 10, w: 95,  h: 44 },
   { id: 'pg',       label: 'PostgreSQL', sub: 'DB',            color: blue,   x: 620, y: 10, w: 110, h: 44 },
   { id: 'mythic',   label: 'Mythic C2',  sub: 'C2 Framework',  color: violet, x: 446, y: 100, w: 95, h: 44 },
-  { id: 'agent',    label: 'Agent',      sub: 'Win/Linux',     color: teal,   x: 730, y: 100, w: 90, h: 44 },
+  { id: 'profile',  label: 'Profil C2',  sub: 'HTTP · Chess · Notion', color: tokens.color.semantic.warning, x: 595, y: 100, w: 120, h: 44 },
+  { id: 'agent',    label: 'Agent',      sub: 'Win/Linux',     color: teal,   x: 790, y: 100, w: 90, h: 44 },
 ]
 
 // Edge definitions: which nodes to connect, and packet params
@@ -53,8 +59,10 @@ const EDGES: SEdge[] = [
   { from: 'fastapi', to: 'pg',      color: blue,   count: 2, dur: 1.3 },
   { from: 'mythic',  to: 'fastapi', color: violet, count: 2, dur: 1.2, reverse: false },
   { from: 'fastapi', to: 'mythic',  color: teal,   count: 2, dur: 1.4 },
-  { from: 'mythic',  to: 'agent',   color: teal,   count: 2, dur: 1.0 },
-  { from: 'agent',   to: 'mythic',  color: violet, count: 2, dur: 1.2 },
+  { from: 'mythic',  to: 'profile', color: teal,   count: 2, dur: 1.0 },
+  { from: 'profile', to: 'mythic',  color: violet, count: 2, dur: 1.2 },
+  { from: 'profile', to: 'agent',   color: teal,   count: 2, dur: 0.95 },
+  { from: 'agent',   to: 'profile', color: violet, count: 2, dur: 1.15 },
 ]
 
 function cx(n: SNode) { return n.x + n.w / 2 }
@@ -193,7 +201,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>05 - Plateforme</Eyebrow>
+        <Eyebrow>06 - Architecture de la plateforme</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -242,11 +250,19 @@ export function Component(_: SlideContext) {
           style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `3px solid ${tokens.color.accent.blue}`, borderRadius: 10, padding: '14px 18px' }}
         >
           <SectionLabel color={tokens.color.accent.blue}>CLI seemslegit-cli</SectionLabel>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5, marginTop: 12 }}>
-            {CLI.map(cmd => (
-              <span key={cmd} style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 4, padding: '3px 8px' }}>
-                {cmd}
-              </span>
+          <p style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, margin: '10px 0 0' }}>
+            Un point d'entrée unique pour installer, configurer et piloter l'infrastructure sans repasser par chaque service séparément.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: 12 }}>
+            {CLI_ACTIONS.map(({ cmd, detail }) => (
+              <div key={cmd} style={{ display: 'flex', alignItems: 'baseline', gap: 10, background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 6, padding: '7px 10px' }}>
+                <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: tokens.color.accent.blue, fontWeight: 700, minWidth: 182, flexShrink: 0 }}>
+                  $ {cmd}
+                </span>
+                <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted }}>
+                  {detail}
+                </span>
+              </div>
             ))}
           </div>
         </motion.div>

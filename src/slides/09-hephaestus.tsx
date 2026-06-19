@@ -2,114 +2,170 @@ import { SlideContext, SlideMeta } from '../engine/types'
 import { motion } from 'framer-motion'
 import { tokens } from '../design/tokens'
 import { Eyebrow } from '../ui/Eyebrow'
-import { Terminal, TermLine, Tag, SectionLabel, Highlight } from './_shared'
+import { Tag, SectionLabel } from './_shared'
 
 export const meta: SlideMeta = {
-  title: 'Hephaestus',
-  speaker: ['Killian'],
-  notes: 'Montrez le terminal en temps réel. Chaque ligne = une étape réelle du flux d\'injection. Clé unique par build = pas de signature statique réutilisable.',
+  title: 'Loaders',
+  speaker: ['Killian', 'Harouna'],
+  notes: 'Deux loaders complémentaires. Hephaestus est en Nim (même stack qu\'Aphrodite), Atreus est en C++ (même stack que Kratos). Ils partagent les mêmes primitives d\'évasion mais ont des techniques d\'injection différentes.',
 }
 
-const INJECT_LOG: TermLine[] = [
-  { t: 'cmd', text: 'hephaestus.exe --inject --pid 1337 --ppid 642' },
-  { t: 'blank' },
-  { t: 'info', text: 'Sandbox check: uptime=14m32s  ram=8192MB  cpu=4' },
-  { t: 'ok', text:  'Sandbox: PASSED' },
-  { t: 'info', text: 'Remapping ntdll.dll from disk  (0x77380000)' },
-  { t: 'ok', text:  'ntdll userland hooks cleared  (34 functions restored)' },
-  { t: 'info', text: 'Patching ETW: NtTraceEvent @ 0x7738FA20' },
-  { t: 'ok', text:  'ETW: xor eax,eax; ret  [PATCHED]' },
-  { t: 'info', text: 'Patching AMSI: AmsiScanBuffer @ 0x71A23B40' },
-  { t: 'ok', text:  'AMSI: xor eax,eax; ret  [PATCHED]' },
-  { t: 'blank' },
-  { t: 'info', text: 'Spawning svchost.exe  PPID=642 (services.exe)  CREATE_SUSPENDED' },
-  { t: 'ok', text:  'Child PID: 1337  handle: 0x000002A4' },
-  { t: 'info', text: 'VirtualAllocEx: 0xA800 bytes PAGE_EXECUTE_READWRITE' },
-  { t: 'ok', text:  'Remote buffer: 0x01F40000' },
-  { t: 'info', text: 'WriteProcessMemory: 43008 bytes' },
-  { t: 'ok', text:  'Shellcode written  [RC4 key: 8f3a...d92c]' },
-  { t: 'info', text: 'Queuing APC via Early Bird injection' },
-  { t: 'ok', text:  'ResumeThread: injected' },
-  { t: 'info', text: 'Wiping local shellcode buffer' },
-  { t: 'blank' },
-  { t: 'ok', text:  'Agent alive.  C2: chess.com/fen/base5  UUID: a3f7...' },
+const W = tokens.color.semantic.warning
+const B = tokens.color.accent.blue
+
+const HEP_TECH = [
+  { label: 'Early Bird APC',     detail: 'shellcode injecté avant le point d\'entrée du process' },
+  { label: 'Thread Hijacking',   detail: 'suspension + modification du contexte d\'un thread existant' },
+  { label: 'Process Hollowing',  detail: 'image PE remplacée en mémoire après création suspendue' },
 ]
 
-const TECHNIQUES = [
-  { name: 'PPID Spoofing', detail: 'process tree', color: tokens.color.semantic.warning },
-  { name: 'ntdll Unhooking', detail: 'EDR userland hooks', color: tokens.color.semantic.critical },
-  { name: 'ETW Patch', detail: 'NtTraceEvent xor ret', color: tokens.color.semantic.critical },
-  { name: 'AMSI Patch', detail: 'AmsiScanBuffer', color: tokens.color.semantic.critical },
-  { name: 'Memory Wipe', detail: 'anti-forensics', color: tokens.color.accent.blue },
+const ATREUS_TECH = [
+  { label: 'Process Hollowing',  detail: 'image PE remplacée en mémoire - process cible lancé suspendu' },
+  { label: 'Fiber Injection',    detail: 'exécution via fiber Win32 - évite CreateThread' },
+  { label: 'Module Stomping',    detail: 'écrase une DLL légitime déjà chargée en mémoire' },
+  { label: 'Remote Injection',   detail: 'VirtualAllocEx + WriteProcessMemory dans process distant' },
+  { label: 'Thread Hijacking',   detail: 'même technique que Hephaestus, impl. C++' },
 ]
+
+const SHARED = [
+  'PPID Spoofing - parent process usurpé (ex. services.exe)',
+  'Sandbox detection - uptime, RAM, CPU, artefacts VM',
+  'ntdll remapping + ETW / AMSI patch avant injection',
+  'Heap wiping - efface les traces du shellcode en RAM',
+]
+
+// ── Injection flow mini-diagram ───────────────────────────────────────────────
+
+const STEPS = [
+  { label: 'Sandbox\ncheck', color: B },
+  { label: 'ntdll\nunhook', color: W },
+  { label: 'ETW/AMSI\npatch', color: W },
+  { label: 'Spawn +\nPPID spoof', color: tokens.color.accent.violet },
+  { label: 'Inject\nshellcode', color: tokens.color.semantic.success },
+  { label: 'Heap\nwipe', color: tokens.color.text.muted },
+]
+
+function InjectionFlow() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 0, width: '100%', overflowX: 'auto' }}>
+      {STEPS.map(({ label, color }, i) => (
+        <motion.div key={i}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: 0.4 + i * 0.09 }}
+          style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}
+        >
+          <div style={{ background: `${color}10`, border: `1px solid ${color}35`, borderRadius: 7, padding: '6px 10px', textAlign: 'center', minWidth: 72 }}>
+            <div style={{ fontFamily: tokens.type.family.mono, fontSize: '11px', fontWeight: 700, color, letterSpacing: '0.04em', whiteSpace: 'pre-line', lineHeight: 1.3 }}>{label}</div>
+          </div>
+          {i < STEPS.length - 1 && (
+            <div style={{ width: 22, height: 1, background: tokens.color.surface.line, flexShrink: 0, position: 'relative' }}>
+              <div style={{ position: 'absolute', right: -2, top: '50%', transform: 'translateY(-50%)', width: 5, height: 5, borderTop: `1px solid ${tokens.color.surface.line}`, borderRight: `1px solid ${tokens.color.surface.line}`, rotate: '45deg' }} />
+            </div>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  )
+}
+
+// ── Slide ─────────────────────────────────────────────────────────────────────
 
 export function Component(_: SlideContext) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>08 - Hephaestus · Loader Windows · Nim</Eyebrow>
+        <Eyebrow>10 - Loaders - Hephaestus & Atreus</Eyebrow>
       </motion.div>
 
       <motion.h2
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
+        initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.08 }}
         style={{ fontSize: tokens.type.size['2xl'], fontWeight: tokens.type.weight.semibold, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.primary, margin: 0 }}
       >
-        Injection &amp; Évasion
+        Deux loaders, un objectif
       </motion.h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18, width: '100%' }}>
+      {/* Two loaders side by side */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, width: '100%' }}>
 
-        {/* Terminal */}
-        <Terminal title="hephaestus.exe" lines={INJECT_LOG} stepDelay={85} />
+        {/* Hephaestus */}
+        <motion.div
+          initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.18 }}
+          style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderTop: `2px solid ${W}`, borderRadius: 10, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontFamily: tokens.type.family.mono, fontSize: '23px', fontWeight: 800, color: W, letterSpacing: '-0.02em' }}>Hephaestus</span>
+            <Tag color={W}>Nim</Tag>
+            <Tag color={tokens.color.text.muted}>Windows</Tag>
+          </div>
 
-        {/* Right column */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.muted, lineHeight: tokens.type.leading.relaxed }}>
+            Même stack qu'Aphrodite. Emballe le shellcode de l'agent et gère tout le flux d'injection.
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.45, delay: 0.3 }}
-            style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '16px 20px' }}
-          >
-            <SectionLabel>Techniques Anti-EDR</SectionLabel>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 12 }}>
-              {TECHNIQUES.map(({ name, detail, color }) => (
-                <div key={name} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: tokens.color.surface.tech, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 5, padding: '6px 10px' }}>
-                  <span style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, fontFamily: tokens.type.family.mono }}>{name}</span>
-                  <Tag color={color}>{detail}</Tag>
+          <div>
+            <SectionLabel color={W}>Techniques d'injection</SectionLabel>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginTop: 8 }}>
+              {HEP_TECH.map(({ label, detail }) => (
+                <div key={label} style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${W}`, borderRadius: 6, padding: '6px 10px' }}>
+                  <div style={{ fontFamily: tokens.type.family.mono, fontSize: '13px', fontWeight: 700, color: W, marginBottom: 2 }}>{label}</div>
+                  <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, lineHeight: 1.35 }}>{detail}</div>
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.45, delay: 0.42 }}
-            style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '14px 18px' }}
-          >
-            <SectionLabel>Modes d'injection</SectionLabel>
-            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-              <Tag color={tokens.color.accent.blue}>Early Bird APC</Tag>
-              <Tag color={tokens.color.accent.violet}>Thread Hijacking</Tag>
+        {/* Atreus */}
+        <motion.div
+          initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.25 }}
+          style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderTop: `2px solid ${B}`, borderRadius: 10, padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontFamily: tokens.type.family.mono, fontSize: '23px', fontWeight: 800, color: B, letterSpacing: '-0.02em' }}>Atreus</span>
+            <Tag color={B}>C++</Tag>
+            <Tag color={tokens.color.text.muted}>Windows</Tag>
+          </div>
+
+          <div style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.muted, lineHeight: tokens.type.leading.relaxed }}>
+            Même stack que Kratos. Techniques d'injection distinctes pour varier le profil comportemental selon la cible.
+          </div>
+
+          <div>
+            <SectionLabel color={B}>Techniques d'injection</SectionLabel>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginTop: 8 }}>
+              {ATREUS_TECH.map(({ label, detail }) => (
+                <div key={label} style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${B}`, borderRadius: 6, padding: '6px 10px' }}>
+                  <div style={{ fontFamily: tokens.type.family.mono, fontSize: '13px', fontWeight: 700, color: B, marginBottom: 2 }}>{label}</div>
+                  <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, lineHeight: 1.35 }}>{detail}</div>
+                </div>
+              ))}
             </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.45, delay: 0.54 }}
-          >
-            <Highlight color={tokens.color.accent.teal}>
-              Clé RC4/XOR générée à chaque build - chaque binaire est <strong style={{ color: tokens.color.accent.teal }}>unique et distinct</strong>, aucune signature statique réutilisable entre deux compilations.
-            </Highlight>
-          </motion.div>
-
-        </div>
+          </div>
+        </motion.div>
       </div>
+
+      {/* Shared techniques + flow */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, delay: 0.38 }}
+        style={{ width: '100%', background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '14px 18px', display: 'flex', flexDirection: 'column', gap: 12 }}
+      >
+        <SectionLabel>Flux commun aux deux loaders</SectionLabel>
+        <InjectionFlow />
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          {SHARED.map((text, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 + i * 0.07 }}
+              style={{ display: 'flex', gap: 6, alignItems: 'flex-start', fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, flex: '1 1 200px' }}
+            >
+              <span style={{ color: tokens.color.text.muted, flexShrink: 0, fontFamily: tokens.type.family.mono, fontSize: '12px' }}>→</span>
+              {text}
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
     </div>
   )
 }

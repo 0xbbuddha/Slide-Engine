@@ -2,135 +2,71 @@ import { SlideContext, SlideMeta } from '../engine/types'
 import { motion } from 'framer-motion'
 import { tokens } from '../design/tokens'
 import { Eyebrow } from '../ui/Eyebrow'
-import { Tag, SectionLabel } from './_shared'
+import { Tag } from './_shared'
 
 export const meta: SlideMeta = {
   title: 'Gestion de projet',
-  speaker: ['Harouna', 'Killian', 'Jeremy'],
-  notes: 'Kanban sur plateforme hébergée, 3 tracks parallèles. L\'organisation rigoureuse a permis de mener plateforme + 4 agents en parallèle.',
+  speaker: ['Jeremy'],
+  notes: '',
 }
 
-const TRACKS = [
-  { label: 'Plateforme', color: tokens.color.accent.teal, detail: 'Backend FastAPI · Frontend React · Docker Compose' },
-  { label: 'Agents', color: tokens.color.accent.blue, detail: 'Kratos · Morpheus · Hermes · Aphrodite · Hephaestus' },
-  { label: 'Évasion', color: tokens.color.semantic.critical, detail: 'Recherche techniques · Code Generator · VirusTotal' },
-]
-
-const TEAM = [
-  { name: 'Harouna Coulibaly', color: tokens.color.accent.teal },
-  { name: 'Killian Prin-Abeil', color: tokens.color.accent.blue },
-  { name: 'Jeremy Diaz', color: tokens.color.accent.violet },
-]
-
-const KANBAN = [
-  { col: 'Backlog', color: tokens.color.text.muted, items: ['Domain fronting', 'Sliver support'] },
-  { col: 'In Progress', color: tokens.color.accent.blue, items: ['Code Generator v2', 'Notion C2'] },
-  { col: 'Review', color: tokens.color.semantic.warning, items: ['VT Integration', 'Hephaestus opsec'] },
-  { col: 'Done', color: tokens.color.semantic.success, items: ['4 agents Mythic', 'Chess.com C2', 'CLI seemslegit'] },
+const PILOTING = [
+  { label: 'Kanban heberge', color: tokens.color.accent.teal, detail: 'backlog, responsable, priorite, etat' },
+  { label: 'Points reguliers', color: tokens.color.accent.blue, detail: 'sync plateforme, agents et tests' },
+  { label: 'Lab partage', color: tokens.color.semantic.warning, detail: 'meme environnement pour les builds' },
+  { label: 'Mesure continue', color: tokens.color.accent.violet, detail: 'VT, Defender et Elastic EDR' },
 ]
 
 export function Component(_: SlideContext) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>12 - Gestion de Projet</Eyebrow>
+        <Eyebrow>05 - Gestion de projet</Eyebrow>
       </motion.div>
 
       <motion.h2
-        initial={{ opacity: 0, y: 16 }}
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-        style={{ fontSize: tokens.type.size['2xl'], fontWeight: tokens.type.weight.semibold, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.primary, margin: 0 }}
+        transition={{ duration: 0.45, delay: 0.08 }}
+        style={{ fontSize: tokens.type.size['2xl'], fontWeight: 600, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.primary, margin: 0 }}
       >
-        Organisation &amp; Kanban
+        Pilotage du projet
       </motion.h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, width: '100%' }}>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-
-          {/* Tracks */}
+      {/* 4 items horizontal compact */}
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.15 } } }}
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, width: '100%' }}
+      >
+        {PILOTING.map(({ label, color, detail }) => (
           <motion.div
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.45, delay: 0.2 }}
-            style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `3px solid ${tokens.color.accent.teal}`, borderRadius: 12, padding: '18px 22px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
+            key={label}
+            variants={{ hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } }}
+            style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderTop: `2px solid ${color}`, borderRadius: 8, padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: 5 }}
           >
-            <SectionLabel color={tokens.color.accent.teal}>3 Tracks parallèles</SectionLabel>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 12 }}>
-              {TRACKS.map(({ label, color, detail }) => (
-                <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 10, background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 7, padding: '7px 12px' }}>
-                  <Tag color={color}>{label}</Tag>
-                  <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted }}>{detail}</span>
-                </div>
-              ))}
-            </div>
+            <Tag color={color}>{label}</Tag>
+            <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, lineHeight: 1.4 }}>{detail}</span>
           </motion.div>
+        ))}
+      </motion.div>
 
-          {/* Team */}
-          <motion.div
-            initial={{ opacity: 0, x: -12 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.45, delay: 0.32 }}
-            style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 12, padding: '18px 22px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
-          >
-            <SectionLabel>Équipe</SectionLabel>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginTop: 12 }}>
-              {TEAM.map(({ name, color }) => (
-                <div key={name} style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `2px solid ${color}`, borderRadius: 7, padding: '9px 14px' }}>
-                  <div style={{ fontSize: tokens.type.size.sm, fontWeight: tokens.type.weight.semibold, color: tokens.color.text.primary }}>{name}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+      {/* Kanban - taille fixe raisonnable */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.35 }}
+        style={{ width: '100%', height: 300, borderRadius: 10, overflow: 'hidden', border: `1px solid ${tokens.color.surface.line}` }}
+      >
+        <img
+          src="/kanban.png"
+          alt="Tableau Kanban"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'left top', display: 'block' }}
+        />
+      </motion.div>
 
-        </div>
-
-        {/* Kanban */}
-        <motion.div
-          initial={{ opacity: 0, x: 12 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 12, padding: '18px 22px', boxShadow: '0 1px 4px rgba(0,0,0,0.04)' }}
-        >
-          <SectionLabel>Tableau Kanban</SectionLabel>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10, marginTop: 14 }}>
-            {KANBAN.map(({ col, color, items }) => (
-              <div key={col} style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 8, padding: '12px 14px' }}>
-                <div style={{
-                  fontFamily: tokens.type.family.mono,
-                  fontSize: tokens.type.size.xs,
-                  fontWeight: tokens.type.weight.semibold,
-                  color,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  marginBottom: 10,
-                  paddingBottom: 8,
-                  borderBottom: `1px solid ${tokens.color.surface.line}`,
-                }}>
-                  {col}
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                  {items.map((item) => (
-                    <div key={item} style={{
-                      background: tokens.color.surface.subtle,
-                      border: `1px solid ${tokens.color.surface.line}`,
-                      borderRadius: 4,
-                      padding: '4px 8px',
-                      fontSize: tokens.type.size.xs,
-                      color: tokens.color.text.tertiary,
-                    }}>
-                      {item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-      </div>
     </div>
   )
 }

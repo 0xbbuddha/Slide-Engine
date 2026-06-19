@@ -4,9 +4,9 @@ import { tokens } from '../design/tokens'
 import { Eyebrow } from '../ui/Eyebrow'
 
 export const meta: SlideMeta = {
-  title: 'Equipe',
+  title: 'Équipe',
   speaker: ['Harouna', 'Killian', 'Jeremy'],
-  notes: 'Presentez-vous brievement chacun. Nom, parcours, ce qui vous a amene a ce projet.',
+  notes: 'Présentez-vous brièvement chacun. Nom, parcours, et ce qui vous a amenés à ce projet.',
 }
 
 const MEMBERS = [
@@ -16,23 +16,23 @@ const MEMBERS = [
     color: tokens.color.accent.teal,
     photo: '/harouna.png',
     role: 'Project Lead · Malware Developer · Infrastructure Architect',
-    tags: ['C99 / C++', 'Process Injection', 'Lab Proxmox'],
+    tags: ['C99 / C++', 'Mythic API', 'Lab Proxmox'],
   },
   {
     name: 'Killian Prin-Abeil',
     initials: 'KP',
     color: tokens.color.accent.blue,
     photo: '/killian.jpg',
-    role: 'Malware Developer · Platform Architect · C2 Researcher',
-    tags: ['Nim / Python', 'Mythic API', 'Covert C2'],
+    role: 'Malware Developer · C2 Researcher',
+    tags: ['Nim / Python', 'Cross-compilation', 'Covert C2'],
   },
   {
     name: 'Jeremy Diaz',
     initials: 'JD',
     color: tokens.color.accent.violet,
     photo: '/jeremy.png',
-    role: 'Malware Developer · Build Engineer · Technical Tester',
-    tags: ['Go', 'Cross-compile', 'AV Testing'],
+    role: 'Malware Developer · Technical Tester',
+    tags: ['Go', 'Benchmark C2', 'AV Testing'],
   },
 ]
 
@@ -41,7 +41,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 28, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>Presentation de l'equipe</Eyebrow>
+        <Eyebrow>Présentation de l'équipe</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -50,7 +50,7 @@ export function Component(_: SlideContext) {
         transition={{ duration: 0.5, delay: 0.08 }}
         style={{ fontSize: tokens.type.size['2xl'], fontWeight: tokens.type.weight.semibold, letterSpacing: tokens.type.tracking.tight, color: tokens.color.text.primary, margin: 0 }}
       >
-        L'equipe SeemsLegit
+        L'équipe SeemsLegit
       </motion.h2>
 
       <motion.div
@@ -120,7 +120,7 @@ export function Component(_: SlideContext) {
               </div>
 
               <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted }}>
-                M1 Cybersecurite · Oteria Cyber School
+                M1 Cybersécurité · Oteria Cyber School
               </div>
             </div>
 

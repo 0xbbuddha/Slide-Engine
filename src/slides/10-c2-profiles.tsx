@@ -13,7 +13,7 @@ export const meta: SlideMeta = {
 
 // ── Chess engine ───────────────────────────────────────────────────────────
 
-const CELL = 38
+const CELL = 30
 
 const PIECES: Record<string, string> = {
   K: '♔', Q: '♕', R: '♖', B: '♗', N: '♘', P: '♙',
@@ -172,9 +172,9 @@ function NotionView() {
       {/* Principle */}
       <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 4 }}>
         {[
-          'Tasks = entrees d\'une database Notion publique',
+          'Tasks = entrées d\'une base Notion publique',
           'Agent lit via l\'API officielle (api.notion.com)',
-          'Trafic = requetes HTTPS Notion legitimes',
+          'Trafic = requêtes HTTPS Notion légitimes',
         ].map((l, i) => (
           <div key={i} style={{ display: 'flex', gap: 6, fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, lineHeight: 1.5 }}>
             <span style={{ color: tokens.color.accent.violet, flexShrink: 0 }}>→</span>{l}
@@ -214,7 +214,7 @@ export function Component(_: SlideContext) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: 'calc(100% + 80px)', marginLeft: -40, alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>09 - Canaux C2 Couverts</Eyebrow>
+        <Eyebrow>11 - Profils C2</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -235,85 +235,85 @@ export function Component(_: SlideContext) {
           transition={{ duration: 0.5, delay: 0.18 }}
           style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderTop: `2px solid ${tokens.color.accent.teal}`, borderRadius: 10, padding: '14px', display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }}
         >
-          <SectionLabel color={tokens.color.accent.teal}>Chess.com - covert channel</SectionLabel>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <img src="/chesscom.png" alt="Chess.com" style={{ width: 22, height: 22, borderRadius: 5, objectFit: 'contain', flexShrink: 0 }} />
+            <SectionLabel color={tokens.color.accent.teal}>Chess.com - covert channel</SectionLabel>
+          </div>
 
-          <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', minWidth: 0 }}>
+          <div style={{ display: 'flex', gap: 14, alignItems: 'stretch', minWidth: 0 }}>
             {/* Board */}
-            <div style={{ flexShrink: 0 }}>
+            <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
               <ChessBoard pos={current} />
-              <div style={{ marginTop: 4 }}>
-                <LiveFEN fen={current.fen} />
-              </div>
             </div>
 
             {/* Right of board */}
-            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, minWidth: 0 }}>
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, minWidth: 0, minHeight: CELL * 8 }}>
 
               {/* Principle */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                 {[
-                  'Payload bytes encodes Base5 PNBRQ -> positions FEN',
-                  'Partie publiee sur Chess.com comme vraie game',
-                  'Trafic indiscernable du chess normal',
+                  'Payload encodé en Base5 PNBRQ → positions FEN',
+                  'Partie publiée sur Chess.com comme vraie partie',
+                  'Trafic indiscernable d\'une partie normale',
                 ].map((l, i) => (
-                  <div key={i} style={{ display: 'flex', gap: 6, fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: 1.5 }}>
+                  <div key={i} style={{ display: 'flex', gap: 6, fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: 1.4 }}>
                     <span style={{ color: tokens.color.accent.teal, flexShrink: 0 }}>→</span>{l}
                   </div>
                 ))}
               </div>
 
               {/* Base5 */}
-              <div style={{ display: 'flex', gap: 4 }}>
+              <div style={{ display: 'flex', gap: 3 }}>
                 {BASE5_MAP.map((p, i) => (
-                  <div key={p} style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 4, padding: '4px 8px', textAlign: 'center', flex: 1 }}>
-                    <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.md, fontWeight: 700, color: tokens.color.accent.teal, lineHeight: 1 }}>{p}</div>
+                  <div key={p} style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 4, padding: '3px 6px', textAlign: 'center', flex: 1 }}>
+                    <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.sm, fontWeight: 700, color: tokens.color.accent.teal, lineHeight: 1 }}>{p}</div>
                     <div style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size['2xs'], color: tokens.color.text.muted, marginTop: 2 }}>{i}</div>
                   </div>
                 ))}
               </div>
 
               {/* Payload stream */}
-              <div style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 6, padding: '8px 10px', height: 146, overflow: 'hidden' }}>
+              <div style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 6, padding: '8px 10px', flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ fontSize: tokens.type.size['2xs'], letterSpacing: '0.08em', color: tokens.color.text.muted, textTransform: 'uppercase', fontWeight: 600, fontFamily: tokens.type.family.mono, marginBottom: 6 }}>payload flux</div>
-                <div style={{ display: 'grid', gridTemplateRows: 'repeat(5, 22px)', gap: 2 }}>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={posIdx}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: current.side === 'server' ? tokens.color.accent.teal : tokens.color.accent.blue, height: 22, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', overflow: 'hidden' }}
-                  >
-                    {current.byte ? (
-                      <>
-                        <span style={{ opacity: 0.5 }}>{current.side === 'server' ? '[srv] ' : '[agt] '}</span>
-                        <span style={{ fontWeight: 700 }}>{current.byte}</span>
-                        {'  '}
-                        <span style={{ color: tokens.color.text.muted, fontSize: tokens.type.size.xs, overflow: 'hidden', textOverflow: 'ellipsis' }}>{current.comment}</span>
-                      </>
-                    ) : (
-                      <span style={{ color: tokens.color.text.muted }}>{'// en attente...'}</span>
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-                {historyRows.map((row, i) => (
-                  row ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 3, flex: 1 }}>
+                  <AnimatePresence mode="wait">
                     <motion.div
-                      key={`${row.byte}-${i}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 0.4 }}
-                      transition={{ duration: 0.3 }}
-                      style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: row.side === 'server' ? tokens.color.accent.teal : tokens.color.accent.blue, height: 22, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', overflow: 'hidden' }}
+                      key={posIdx}
+                      initial={{ opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.25 }}
+                      style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: current.side === 'server' ? tokens.color.accent.teal : tokens.color.accent.blue, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', overflow: 'hidden' }}
                     >
-                      <span style={{ opacity: 0.5 }}>{row.side === 'server' ? '[srv] ' : '[agt] '}</span>
-                      {row.byte}{'  '}
-                      <span style={{ color: tokens.color.text.muted, fontSize: tokens.type.size.xs, overflow: 'hidden', textOverflow: 'ellipsis' }}>{row.comment}</span>
+                      {current.byte ? (
+                        <>
+                          <span style={{ opacity: 0.5 }}>{current.side === 'server' ? '[srv] ' : '[agt] '}</span>
+                          <span style={{ fontWeight: 700 }}>{current.byte}</span>
+                          {'  '}
+                          <span style={{ color: tokens.color.text.muted, overflow: 'hidden', textOverflow: 'ellipsis' }}>{current.comment}</span>
+                        </>
+                      ) : (
+                        <span style={{ color: tokens.color.text.muted }}>{'// en attente...'}</span>
+                      )}
                     </motion.div>
-                  ) : (
-                    <div key={`placeholder-${i}`} style={{ height: 22 }} />
-                  )
-                ))}
+                  </AnimatePresence>
+                  {historyRows.map((row, i) => (
+                    row ? (
+                      <motion.div
+                        key={`${row.byte}-${i}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 0.4 }}
+                        transition={{ duration: 0.3 }}
+                        style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, color: row.side === 'server' ? tokens.color.accent.teal : tokens.color.accent.blue, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', overflow: 'hidden' }}
+                      >
+                        <span style={{ opacity: 0.5 }}>{row.side === 'server' ? '[srv] ' : '[agt] '}</span>
+                        {row.byte}{'  '}
+                        <span style={{ color: tokens.color.text.muted, overflow: 'hidden', textOverflow: 'ellipsis' }}>{row.comment}</span>
+                      </motion.div>
+                    ) : (
+                      <div key={`placeholder-${i}`} />
+                    )
+                  ))}
                 </div>
               </div>
             </div>
@@ -327,7 +327,10 @@ export function Component(_: SlideContext) {
           transition={{ duration: 0.5, delay: 0.28 }}
           style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderTop: `2px solid ${tokens.color.accent.violet}`, borderRadius: 10, padding: '14px', display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }}
         >
-          <SectionLabel color={tokens.color.accent.violet}>Notion API - database channel</SectionLabel>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <img src="/notion.png" alt="Notion" style={{ width: 22, height: 22, borderRadius: 4, objectFit: 'contain', flexShrink: 0 }} />
+            <SectionLabel color={tokens.color.accent.violet}>Notion API - database channel</SectionLabel>
+          </div>
           <NotionView />
         </motion.div>
 
@@ -341,7 +344,17 @@ export function Component(_: SlideContext) {
         style={{ display: 'flex', gap: 10, alignItems: 'center' }}
       >
         <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, fontFamily: tokens.type.family.mono }}>+ profil de base :</span>
-        <Tag color={tokens.color.semantic.warning}>HTTP Standard</Tag>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ width: 22, height: 22, borderRadius: 4, background: `${tokens.color.semantic.warning}18`, border: `1px solid ${tokens.color.semantic.warning}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <circle cx="6.5" cy="6.5" r="5.5" stroke={tokens.color.semantic.warning} strokeWidth="1.2" fill="none"/>
+              <path d="M6.5 1 C5 3 4.5 4.8 4.5 6.5 C4.5 8.2 5 10 6.5 12" stroke={tokens.color.semantic.warning} strokeWidth="0.9" fill="none"/>
+              <path d="M6.5 1 C8 3 8.5 4.8 8.5 6.5 C8.5 8.2 8 10 6.5 12" stroke={tokens.color.semantic.warning} strokeWidth="0.9" fill="none"/>
+              <line x1="1" y1="6.5" x2="12" y2="6.5" stroke={tokens.color.semantic.warning} strokeWidth="0.9"/>
+            </svg>
+          </div>
+          <Tag color={tokens.color.semantic.warning}>HTTP standard</Tag>
+        </div>
         <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted }}>Jitter configurable, kill date, user-agent spoofing</span>
       </motion.div>
 

@@ -1,33 +1,14 @@
 import { SlideContext, SlideMeta } from '../engine/types'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEffect, useState, useRef } from 'react'
 import { tokens } from '../design/tokens'
 import { Eyebrow } from '../ui/Eyebrow'
-import { Reveal } from '../ui/Reveal'
-import { SectionLabel, Highlight } from './_shared'
 
 export const meta: SlideMeta = {
   title: 'Résultats',
-  speaker: ['Harouna', 'Killian', 'Jeremy'],
-  steps: 4,
-  notes: 'Les métriques s\'animent au chargement. Révélez limitations avec →. Soyez honnêtes sur les limitations - le jury appréciera la lucidité.',
+  speaker: ['Jeremy'],
+  notes: 'Laissez les chiffres parler. 47 → 8 détections sur Defender. 4 agents connectés à Mythic, chaîne complète testée.',
 }
-
-const SUCCESSES = [
-  'CodeGenerator produit des binaires structurellement uniques par build',
-  '4 agents check-in dans Mythic et exécutent des commandes',
-  'Bypass des hooks EDR courants (ntdll userland hooking)',
-  '3 profils C2 couverts opérationnels (Chess.com · Notion · HTTP)',
-  'Boucle VirusTotal fonctionnelle - feedback itératif',
-  'Multi-workspace avec isolation complète des engagements',
-]
-
-const LIMITATIONS = [
-  'API Mythic - toutes les intégrations souhaitées pas encore implémentées',
-  'Certains modules d\'évasion ne sont pas mutuellement compatibles',
-  'Techniques plus modernes (kernel callbacks, direct syscalls full) non encore implémentées',
-  'Clé API VirusTotal stockée non chiffrée en base (TODO production)',
-]
 
 // ── Animated counter ───────────────────────────────────────────────────────
 
@@ -40,146 +21,132 @@ function AnimCounter({ from, to, duration = 1.6, delay = 0, color, suffix = '' }
   useEffect(() => {
     const startTime = performance.now() + delay * 1000
     let started = false
-
     function tick(now: number) {
       if (now < startTime) { rafRef.current = requestAnimationFrame(tick); return }
       if (!started) started = true
       const elapsed = now - startTime
       const t = Math.min(elapsed / (duration * 1000), 1)
-      const ease = 1 - Math.pow(1 - t, 4)  // quartic out
+      const ease = 1 - Math.pow(1 - t, 4)
       setVal(Math.round(from + (to - from) * ease))
       if (t < 1) rafRef.current = requestAnimationFrame(tick)
     }
-
     rafRef.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafRef.current)
   }, [from, to, duration, delay])
 
-  return (
-    <span style={{ color, fontVariantNumeric: 'tabular-nums' }}>
-      {val}{suffix}
-    </span>
-  )
+  return <span style={{ color, fontVariantNumeric: 'tabular-nums' }}>{val}{suffix}</span>
 }
 
 // ── Arc gauge ──────────────────────────────────────────────────────────────
 
-function ArcGauge({ value, max, color, label, unit }: {
-  value: number; max: number; color: string; label: string; unit?: string
+function ArcGauge({ value, max, color, label, unit, from = 0 }: {
+  value: number; max: number; color: string; label: string; unit?: string; from?: number
 }) {
-  const r = 28
+  const r = 38
   const circ = 2 * Math.PI * r
   const frac = value / max
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
-      <div style={{ position: 'relative', width: 72, height: 72 }}>
-        <svg width={72} height={72} viewBox="0 0 72 72">
-          <circle cx={36} cy={36} r={r} fill="none" stroke={`${color}15`} strokeWidth={6} />
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
+      <div style={{ position: 'relative', width: 96, height: 96 }}>
+        <svg width={96} height={96} viewBox="0 0 96 96">
+          <circle cx={48} cy={48} r={r} fill="none" stroke={`${color}18`} strokeWidth={7} />
           <motion.circle
-            cx={36} cy={36} r={r}
-            fill="none"
-            stroke={color}
-            strokeWidth={6}
+            cx={48} cy={48} r={r}
+            fill="none" stroke={color} strokeWidth={7}
             strokeLinecap="round"
             strokeDasharray={circ}
             initial={{ strokeDashoffset: circ }}
             animate={{ strokeDashoffset: circ * (1 - frac) }}
-            transition={{ duration: 1.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.4 }}
-            style={{ transformOrigin: '36px 36px', rotate: -90 }}
+            transition={{ duration: 1.8, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
+            style={{ transformOrigin: '48px 48px', rotate: -90 }}
           />
         </svg>
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
-            <AnimCounter from={0} to={value} color={color} suffix={unit ?? ''} />
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+          <div style={{ fontSize: tokens.type.size.lg, fontWeight: 800, color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>
+            <AnimCounter from={from} to={value} color={color} />
           </div>
+          {unit && (
+            <div style={{ fontSize: tokens.type.size['2xs'], fontWeight: 600, color, lineHeight: 1, fontFamily: tokens.type.family.mono }}>{unit}</div>
+          )}
         </div>
       </div>
-      <div style={{ fontSize: tokens.type.size['2xs'], fontWeight: 600, color: tokens.color.text.tertiary, textAlign: 'center', fontFamily: tokens.type.family.mono, letterSpacing: '0.04em' }}>
+      <div style={{ fontSize: tokens.type.size.xs, fontWeight: 600, color: tokens.color.text.tertiary, textAlign: 'center', fontFamily: tokens.type.family.mono, letterSpacing: '0.04em', lineHeight: 1.3 }}>
         {label}
       </div>
     </div>
   )
 }
 
-// ── Agent network mini-graph ───────────────────────────────────────────────
+// ── Agent network ──────────────────────────────────────────────────────────
 
 const AGENT_NODES = [
-  { id: 'c2',      label: 'C2',      x: 80, y: 60,  color: '#7c3aed', r: 18 },
-  { id: 'kratos',  label: 'Kratos',  x: 168, y: 18,  color: '#1d4ed8', r: 12 },
-  { id: 'morpheus',label: 'Morpheus',x: 168, y: 60, color: '#0f766e', r: 12 },
-  { id: 'hermes',  label: 'Hermes',  x: 168, y: 102, color: '#1d4ed8', r: 12 },
-  { id: 'aphrodite',label: 'Aphrodite',x: 168, y: 144, color: '#7c3aed', r: 12 },
+  { id: 'c2',       label: 'Mythic C2', x: 40,  y: 90,  color: '#7c3aed', r: 22 },
+  { id: 'profiles', label: 'Profils C2', x: 140, y: 90,  color: '#0f766e', r: 18 },
+  { id: 'kratos',   label: 'Kratos',    x: 240, y: 20,  color: '#1d4ed8', r: 13 },
+  { id: 'morpheus', label: 'Morpheus',  x: 240, y: 65,  color: '#0f766e', r: 13 },
+  { id: 'hermes',   label: 'Hermes',    x: 240, y: 112, color: '#1d4ed8', r: 13 },
+  { id: 'aphrodite',label: 'Aphrodite', x: 240, y: 158, color: '#7c3aed', r: 13 },
 ]
 
 function AgentGraph() {
   const [pulse, setPulse] = useState(0)
-
   useEffect(() => {
     const iv = setInterval(() => setPulse(p => (p + 1) % 4), 900)
     return () => clearInterval(iv)
   }, [])
 
   const c2 = AGENT_NODES[0]
-  const agents = AGENT_NODES.slice(1)
+  const profiles = AGENT_NODES[1]
+  const agents = AGENT_NODES.slice(2)
 
   return (
-    <svg viewBox="0 0 230 165" style={{ width: '100%', height: 130 }} overflow="visible">
+    <svg viewBox="0 0 310 180" style={{ width: '100%', height: '100%' }} overflow="visible">
       <defs>
-        <filter id="agentglow" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
+        <filter id="aglow2" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="2.5" result="blur" />
           <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
       </defs>
 
-      {/* Edges */}
+      <line x1={c2.x} y1={c2.y} x2={profiles.x} y2={profiles.y} stroke={profiles.color} strokeWidth={1.5} strokeOpacity={0.3} strokeDasharray="5 3" />
+      {[0, 0.5].map((d, pi) => (
+        <motion.circle key={pi} r={3} fill={profiles.color} filter="url(#aglow2)"
+          animate={{ cx: [c2.x, profiles.x], cy: [c2.y, profiles.y] }}
+          transition={{ repeat: Infinity, duration: 1.1, ease: 'linear', delay: d }}
+        />
+      ))}
+
       {agents.map((a, i) => (
         <g key={a.id}>
-          <line x1={c2.x} y1={c2.y} x2={a.x} y2={a.y}
-            stroke={a.color} strokeWidth={1.5} strokeOpacity={0.3}
-            strokeDasharray="4 3"
-          />
-          {/* Animated packet along each edge */}
+          <line x1={profiles.x} y1={profiles.y} x2={a.x} y2={a.y} stroke={a.color} strokeWidth={1.5} strokeOpacity={0.3} strokeDasharray="5 3" />
           {[0, 0.5].map((d, pi) => (
-            <motion.circle
-              key={pi}
-              r={2.5}
-              fill={a.color}
-              filter="url(#agentglow)"
-              animate={{
-                cx: pulse % 4 < 2 ? [c2.x, a.x] : [a.x, c2.x],
-                cy: pulse % 4 < 2 ? [c2.y, a.y] : [a.y, c2.y],
-              }}
-              transition={{ repeat: Infinity, duration: 1.1, ease: 'linear', delay: d + i * 0.18 }}
+            <motion.circle key={pi} r={3} fill={a.color} filter="url(#aglow2)"
+              animate={{ cx: [profiles.x, a.x], cy: [profiles.y, a.y] }}
+              transition={{ repeat: Infinity, duration: 1.1, ease: 'linear', delay: d + i * 0.2 }}
             />
           ))}
         </g>
       ))}
 
-      {/* C2 node */}
       <circle cx={c2.x} cy={c2.y} r={c2.r} fill={`${c2.color}15`} stroke={c2.color} strokeWidth={2} />
-      <motion.circle
-        cx={c2.x} cy={c2.y} r={c2.r + 4}
-        fill="none" stroke={c2.color} strokeWidth={1} strokeOpacity={0.4}
-        animate={{ r: [c2.r + 3, c2.r + 9], opacity: [0.5, 0] }}
+      <motion.circle cx={c2.x} cy={c2.y} r={c2.r + 5} fill="none" stroke={c2.color} strokeWidth={1} strokeOpacity={0.4}
+        animate={{ r: [c2.r + 4, c2.r + 12], opacity: [0.5, 0] }}
         transition={{ repeat: Infinity, duration: 2, ease: 'easeOut' }}
       />
-      <text x={c2.x} y={c2.y + 4} textAnchor="middle" fontSize="10" fontFamily='"JetBrains Mono", monospace' fill={c2.color} fontWeight="700">
-        {c2.label}
-      </text>
+      <text x={c2.x} y={c2.y - 2} textAnchor="middle" fontSize="9" fontFamily='"JetBrains Mono", monospace' fill={c2.color} fontWeight="700">Mythic</text>
+      <text x={c2.x} y={c2.y + 9} textAnchor="middle" fontSize="9" fontFamily='"JetBrains Mono", monospace' fill={c2.color} fontWeight="700">C2</text>
 
-      {/* Agent nodes */}
+      <circle cx={profiles.x} cy={profiles.y} r={profiles.r} fill={`${profiles.color}15`} stroke={profiles.color} strokeWidth={2} />
+      <text x={profiles.x} y={profiles.y - 2} textAnchor="middle" fontSize="8" fontFamily='"JetBrains Mono", monospace' fill={profiles.color} fontWeight="700">Profils</text>
+      <text x={profiles.x} y={profiles.y + 9} textAnchor="middle" fontSize="8" fontFamily='"JetBrains Mono", monospace' fill={profiles.color} fontWeight="700">C2</text>
+
       {agents.map((a, i) => (
         <g key={a.id}>
-          <circle cx={a.x} cy={a.y} r={a.r}
-            fill={`${a.color}15`}
-            stroke={a.color}
-            strokeWidth={1.5}
-            filter={i === (pulse % 4) ? 'url(#agentglow)' : undefined}
+          <circle cx={a.x} cy={a.y} r={a.r} fill={`${a.color}15`} stroke={a.color} strokeWidth={1.5}
+            filter={i === (pulse % 4) ? 'url(#aglow2)' : undefined}
           />
-          <text x={a.x + a.r + 4} y={a.y + 4} fontSize="11" fontFamily='"JetBrains Mono", monospace' fill={a.color}>
-            {a.label}
-          </text>
+          <text x={a.x + a.r + 5} y={a.y + 4} fontSize="11" fontFamily='"JetBrains Mono", monospace' fill={a.color}>{a.label}</text>
         </g>
       ))}
     </svg>
@@ -188,12 +155,20 @@ function AgentGraph() {
 
 // ── Main slide ─────────────────────────────────────────────────────────────
 
-export function Component({ step }: SlideContext) {
+const METRICS = [
+  { label: 'Détections\nVirusTotal', from: 47, to: 8,  max: 72, color: '#15803d', unit: '/72' },
+  { label: 'Réduction\ndétections', from: 0,  to: 83, max: 100, color: '#0f766e', unit: '%' },
+  { label: 'Agents\nfrom scratch', from: 0,  to: 4,  max: 4,   color: '#1d4ed8', unit: '' },
+  { label: 'Loaders\nWindows',     from: 0,  to: 2,  max: 2,   color: '#d97706', unit: '' },
+  { label: 'Profils C2\ncouverts', from: 0,  to: 3,  max: 3,   color: '#7c3aed', unit: '' },
+]
+
+export function Component(_: SlideContext) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: '100%', alignItems: 'flex-start' }}>
 
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Eyebrow>13 - Résultats</Eyebrow>
+        <Eyebrow>14 - Résultats</Eyebrow>
       </motion.div>
 
       <motion.h2
@@ -205,86 +180,55 @@ export function Component({ step }: SlideContext) {
         Ce qu'on a livré
       </motion.h2>
 
-      {/* Top metrics bar */}
+      {/* Metrics */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, width: '100%' }}
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 14, width: '100%' }}
       >
-        {[
-          { label: 'Détections VT', from: 47, to: 8, max: 72, color: '#15803d', unit: '/72' },
-          { label: 'Réduction', from: 0, to: 83, max: 100, color: '#0f766e', unit: '%' },
-          { label: 'Agents actifs', from: 0, to: 4, max: 4, color: '#1d4ed8', unit: '' },
-          { label: 'Modules évasion', from: 0, to: 16, max: 16, color: '#7c3aed', unit: '' },
-        ].map(({ label, from, to, max, color, unit }) => (
-          <div key={label} style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '8px', display: 'flex', justifyContent: 'center' }}>
-            <ArcGauge value={to} max={max} color={color} label={label} unit={unit} />
+        {METRICS.map(({ label, from, to, max, color, unit }) => (
+          <div key={label} style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 12, padding: '16px 8px', display: 'flex', justifyContent: 'center' }}>
+            <ArcGauge value={to} max={max} color={color} label={label} unit={unit} from={from} />
           </div>
         ))}
       </motion.div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 12, width: '100%' }}>
+      {/* Agent graph + callout */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 16, width: '100%' }}>
 
-        {/* Left - successes */}
-        <div>
-          <SectionLabel color={tokens.color.semantic.success}>Succès</SectionLabel>
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={{ hidden: {}, show: { transition: { staggerChildren: 0.07, delayChildren: 0.25 } } }}
-            style={{ display: 'flex', flexDirection: 'column', gap: 5, marginTop: 10 }}
-          >
-            {SUCCESSES.map((s) => (
-              <motion.div
-                key={s}
-                variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0, transition: { duration: 0.35 } } }}
-                style={{ display: 'flex', alignItems: 'flex-start', gap: 8, background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 6, padding: '4px 10px' }}
-              >
-                <span style={{ color: tokens.color.semantic.success, flexShrink: 0, fontWeight: tokens.type.weight.bold, fontSize: tokens.type.size.xs }}>✓</span>
-                <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: 1.4 }}>{s}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, x: -12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 12, padding: '18px 20px', height: 200 }}
+        >
+          <AgentGraph />
+        </motion.div>
 
-        {/* Right - agent network + limitations */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <motion.div
+          initial={{ opacity: 0, x: 12 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          style={{ display: 'flex', flexDirection: 'column', gap: 12, justifyContent: 'center' }}
+        >
+          {[
+            { color: tokens.color.semantic.success, text: 'Chaîne complète testée de bout en bout - build, scan VT, loader, exécution, check-in Mythic.' },
+            { color: tokens.color.accent.blue, text: '47 → 8 détections sur la comparaison statique : réduction de 83% grâce au polymorphisme par build.' },
+            { color: tokens.color.accent.teal, text: 'Prototype fonctionnel : pas encore furtif face à Elastic EDR, mais la base technique est là.' },
+          ].map(({ color, text }, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.55 + i * 0.1 }}
+              style={{ display: 'flex', gap: 12, alignItems: 'flex-start', background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderLeft: `3px solid ${color}`, borderRadius: 8, padding: '12px 16px' }}
+            >
+              <span style={{ fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed }}>{text}</span>
+            </motion.div>
+          ))}
+        </motion.div>
 
-          {/* Agent network graph */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 10, padding: '12px 16px' }}
-          >
-            <SectionLabel>Réseau C2 actif</SectionLabel>
-            <div style={{ marginTop: 6, maxHeight: 130, overflow: 'hidden' }}>
-              <AgentGraph />
-            </div>
-          </motion.div>
-
-          <Reveal show={step >= 3}>
-            <div>
-              <SectionLabel color={tokens.color.semantic.warning}>Limitations</SectionLabel>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginTop: 8 }}>
-                {LIMITATIONS.map((l) => (
-                  <div key={l} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 7, padding: '6px 12px' }}>
-                    <span style={{ color: tokens.color.semantic.warning, flexShrink: 0, fontWeight: tokens.type.weight.bold }}>!</span>
-                    <span style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.normal }}>{l}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-
-          <Reveal show={step >= 4}>
-            <Highlight color={tokens.color.accent.blue}>
-              <strong style={{ color: tokens.color.accent.blue }}>Bilan :</strong> objectif principal atteint - agent unique et fonctionnel par build, avec bypass EDR démontré.
-            </Highlight>
-          </Reveal>
-
-        </div>
       </div>
     </div>
   )
