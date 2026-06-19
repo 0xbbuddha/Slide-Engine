@@ -27,7 +27,7 @@ export function Component(_: SlideContext) {
         Retours externes
       </motion.h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, width: '100%' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 14, width: '100%' }}>
 
         {/* Alexandre Tornier */}
         <motion.div
@@ -102,6 +102,41 @@ export function Component(_: SlideContext) {
             <Tag color={tokens.color.text.muted}>Covert channel</Tag>
             <div style={{ marginLeft: 'auto' }}>
               <Tag color={tokens.color.accent.violet}>Communauté active</Tag>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Lavender */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.35 }}
+          style={{ background: tokens.color.surface.subtle, border: `1px solid ${tokens.color.surface.line}`, borderTop: `2px solid ${tokens.color.semantic.warning}`, borderRadius: 10, padding: '16px', display: 'flex', flexDirection: 'column', gap: 12 }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 38, height: 38, borderRadius: '50%', background: `${tokens.color.semantic.warning}20`, border: `1.5px solid ${tokens.color.semantic.warning}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span style={{ fontFamily: tokens.type.family.mono, fontSize: tokens.type.size.xs, fontWeight: 800, color: tokens.color.semantic.warning }}>LV</span>
+            </div>
+            <div>
+              <div style={{ fontSize: tokens.type.size.sm, fontWeight: 700, color: tokens.color.text.primary, lineHeight: 1.2 }}>Lavender</div>
+              <div style={{ fontSize: tokens.type.size.xs, color: tokens.color.text.muted, marginTop: 2 }}>Maldev Community · Loader & Evasion</div>
+            </div>
+          </div>
+
+          <div style={{ background: tokens.color.surface.base, border: `1px solid ${tokens.color.surface.line}`, borderRadius: 6, padding: '7px 10px', fontSize: tokens.type.size.xs, color: tokens.color.text.tertiary, lineHeight: 1.4 }}>
+            <span style={{ fontFamily: tokens.type.family.mono, color: tokens.color.semantic.warning, marginRight: 5 }}>▸</span>
+            Review des loaders - techniques d'évasion comportementale et pistes d'amélioration
+          </div>
+
+          <div style={{ flex: 1, fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, fontStyle: 'italic' }}>
+            "Pour aller plus loin face à la détection comportementale, le DLL sideloading et les XLL sont des pistes concrètes à explorer. Crystal Palace Loader est aussi une bonne référence pour étendre les capacités d'injection sans repartir de zéro."
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', borderTop: `1px solid ${tokens.color.surface.line}`, paddingTop: 10 }}>
+            <Tag color={tokens.color.text.muted}>Loaders</Tag>
+            <Tag color={tokens.color.text.muted}>EDR evasion</Tag>
+            <div style={{ marginLeft: 'auto' }}>
+              <Tag color={tokens.color.semantic.warning}>Pistes identifiées</Tag>
             </div>
           </div>
         </motion.div>
