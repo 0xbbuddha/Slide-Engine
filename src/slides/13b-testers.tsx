@@ -94,7 +94,7 @@ export function Component(_: SlideContext) {
           </div>
 
           <div style={{ flex: 1, fontSize: tokens.type.size.sm, color: tokens.color.text.secondary, lineHeight: tokens.type.leading.relaxed, fontStyle: 'italic' }}>
-            "L'approche covert channel via des services du quotidien est ce qu'on cherche depuis longtemps dans Mythic. Notion en particulier - utiliser l'API officielle comme queue de tasking, c'est exactement le type de profil qui manquait dans l'ecosysteme."
+            "Profil Notion particulièrement discuté - l'idée d'utiliser une API officielle et documentée comme canal de tasking a généré beaucoup d'échanges. Plusieurs membres ont demandé à tester le profil directement."
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap', borderTop: `1px solid ${tokens.color.surface.line}`, paddingTop: 10 }}>
