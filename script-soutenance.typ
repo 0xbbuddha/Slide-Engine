@@ -257,12 +257,16 @@
 #slide("06", "Architecture de la plateforme", (jeremy,), "1 min 30", [
 
   #dit[
-    *Jeremy :* L'architecture est construite autour de quatre services Docker Compose : un reverse proxy nginx, le frontend React, l'API FastAPI avec auth JWT, et PostgreSQL. Mythic C2 est intégré en service séparé. Les profils C2 sont eux aussi des services indépendants - on peut les échanger sans toucher à l'agent.
+    *Jeremy :* Le principe de base de l'architecture, c'est la séparation des responsabilités. Chaque composant fait une chose et une seule - et peut évoluer indépendamment.
 
-    Tout se pilote via le CLI `seemslegit`. Les commandes clés : `seemslegit install` pour bootstrapper, `seemslegit up` pour démarrer, `seemslegit config init` pour initialiser les profils et Mythic. Un point d'entrée unique pour toute l'infrastructure.
+    Concrètement : tout tourne dans Docker Compose. Un reverse proxy nginx en entrée, le frontend React, une API FastAPI qui authentifie via JWT et orchestre les builds, et PostgreSQL pour la persistance. Mythic C2 est un service à part - on ne touche pas à son code, on s'y branche. Et les profils C2 - HTTP, Chess.com, Notion - sont eux aussi des services indépendants. Changer de profil, c'est changer un paramètre, pas recompiler l'agent.
+
+    Ce choix architectural a une conséquence directe sur le développement : quand Killian travaille sur un profil C2, il n'a pas besoin de toucher au code de l'agent. Quand Harouna modifie Kratos, les profils ne bougent pas. On a pu travailler en parallèle sans se marcher dessus.
+
+    Tout se pilote via un seul point d'entrée : le CLI `seemslegit`. Trois commandes suffisent pour démarrer toute l'infrastructure - `install`, `up`, `config init`. Quelqu'un qui récupère le repo peut avoir la plateforme complète opérationnelle en moins de dix minutes.
   ]
 
-  #note[Pointer le schéma d'architecture si des questions portent sur les connexions entre services.]
+  #note[Pointer le schéma si le jury pose des questions sur les connexions entre services. Insister sur "séparation des responsabilités" si la question porte sur les choix techniques.]
 
   #transition[
     _"Cette architecture supporte quatre agents que nous avons développés from scratch."_
@@ -405,6 +409,20 @@
   ]
 
   #note[Si question sur ceux qui restent : _"Les moteurs qui persistent font de la détection comportementale. Le statique s'améliore avec nos variantes, le dynamique est abordé dans le bilan."_]
+
+  #transition[
+    _"On a aussi eu des retours externes. Killian."_
+  ]
+
+])
+
+#slide("13b", "Retours externes", (killian,), "1 min", [
+
+  #dit[
+    *Killian :* On a soumis le projet à deux sources externes. Alexandre Tornier, notre accompagnateur, a fait une revue technique complète. Sa conclusion : l'interface web est le différenciateur principal - aucun concurrent comme ScareCrow ou Nimcrypt2 n'a de dashboard avec gestion de campagnes. Il souligne aussi la pertinence du sujet - l'évasion EDR est le problème numéro un des Red Teams aujourd'hui.
+
+    Du côté de la communauté Mythic, les profils C2 ont généré un engouement notable - autour de 50 stars. Notion en particulier a retenu l'attention : utiliser l'API officielle comme queue de tasking, c'est exactement ce que la communauté cherchait.
+  ]
 
   #transition[
     _"Les résultats complets. Jeremy."_

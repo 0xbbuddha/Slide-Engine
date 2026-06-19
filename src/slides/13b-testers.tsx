@@ -6,7 +6,7 @@ import { Tag } from './_shared'
 
 export const meta: SlideMeta = {
   title: 'Retours externes',
-  speaker: ['Jeremy'],
+  speaker: ['Killian'],
   notes: 'Mentionner les ~50 stars et l\'engouement autour des profils C2 exotiques a l\'oral.',
 }
 
